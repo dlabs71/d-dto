@@ -1,0 +1,37 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": "airbnb-base",
+    "overrides": [
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "rules": {
+        "indent": [
+            "error",
+            4
+        ],
+        "for-direction": 0,
+        "class-methods-use-this": 0,
+        "no-param-reassign": 0,
+        "no-underscore-dangle": 0,
+        "import/extensions": 0,
+        "no-promise-executor-return": 0,
+        "max-classes-per-file": 0,
+        "max-len": [
+            "error",
+            {
+                "code": 121
+            }
+        ]
+    },
+    "ignorePatterns": [
+        "test",
+        "dist"
+    ]
+}

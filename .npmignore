@@ -1,0 +1,9 @@
+.idea
+node_modules
+test
+.editorconfig
+.eslintrc
+.gitignore
+.npmignore
+package-lock.json
+rollup.config.mjs
