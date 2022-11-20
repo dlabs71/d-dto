@@ -1,5 +1,5 @@
-import {PREFIX_PROPERTY_EX} from "../constants";
-import {getJsonFieldProp, getPropertyFromDto} from "./common";
+import {PREFIX_PROPERTY_EX} from "../constants.js";
+import {getJsonFieldProp, getPropertyFromDto} from "./common.js";
 
 export function c2jMapper(dtoModel, skipIfNotDefine = false) {
     let resultJsonObj = {};

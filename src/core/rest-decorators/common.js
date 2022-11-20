@@ -1,6 +1,6 @@
-import {c2jMapperWrapper, j2cMapperWrapper} from "../mappers";
+import {c2jMapperWrapper, j2cMapperWrapper} from "../mappers/index.js";
 import {v5 as uuidV5} from "uuid";
-import {UUID_NAMESPACE} from "../constants";
+import {UUID_NAMESPACE} from "../constants.js";
 
 export function convertResponse(modelResponse, originalMethod, args) {
     let result = originalMethod.call(this, ...args);

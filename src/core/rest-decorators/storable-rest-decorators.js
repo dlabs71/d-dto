@@ -1,5 +1,5 @@
-import {j2cMapperWrapper} from "../mappers";
-import {checkSeparateCondition, createLookupId} from "./common";
+import {j2cMapperWrapper} from "../mappers/index.js";
+import {checkSeparateCondition, createLookupId} from "./common.js";
 
 export function StorableGetMapper(
     modelResponse,

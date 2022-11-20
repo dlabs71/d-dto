@@ -1,5 +1,5 @@
-import {PREFIX_PROPERTY_EX} from "../constants";
-import {getCastTypeProp, getJsonFieldProp, getProperty} from "./common";
+import {PREFIX_PROPERTY_EX} from "../constants.js";
+import {getCastTypeProp, getJsonFieldProp, getProperty} from "./common.js";
 
 export function j2cMapper(jsonObj, dtoModel, skipNotDefine = false) {
     let dto = new dtoModel();

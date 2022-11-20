@@ -1,7 +1,7 @@
-import {CAST_FN_TMPL, JSON_NAME_TMPL} from "../constants";
+import {CAST_FN_TMPL, JSON_NAME_TMPL} from "../constants.js";
 
 export function findPropertyDescription(attrName, clazz) {
-    let proto = clazz.prototype;
+    let proto = clazz.prototype || clazz.__proto__;
     let attrDescription = Object.getOwnPropertyDescriptor(proto, attrName);
     if (!attrDescription) {
         proto = proto.__proto__;

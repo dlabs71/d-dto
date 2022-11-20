@@ -1,4 +1,4 @@
-import {convertArgs, convertResponse} from "./common";
+import {convertArgs, convertResponse} from "./common.js";
 
 export function GetMapper(modelResponse) {
     return (target, property, descriptor) => {

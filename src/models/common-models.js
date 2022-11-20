@@ -1,5 +1,5 @@
-import {c2jMapperWrapper, j2cMapperWrapper} from "../core/mappers";
-import {JsonField, TypeDateTime, TypeNumber, TypeString} from "../core/model-decorators";
+import {c2jMapperWrapper, j2cMapperWrapper} from "../core/mappers/index.js";
+import {JsonField, TypeDateTime, TypeNumber, TypeString} from "../core/model-decorators/index.js";
 
 class ModelExtension {
 

@@ -1,5 +1,5 @@
-import {castDateType, castSimpleType} from "./common";
-import {CAST_FN_TMPL, DATA_TYPE} from "../../constants";
+import {castDateType, castSimpleType} from "./common.js";
+import {CAST_FN_TMPL, DATA_TYPE} from "../../constants.js";
 
 export function TypeString(target, name, description) {
     let castType = (value) => {

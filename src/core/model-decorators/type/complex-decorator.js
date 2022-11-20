@@ -1,5 +1,5 @@
-import {castCustomType, castSimpleType} from "./common";
-import {CAST_FN_TMPL, DATA_TYPE} from "../../constants";
+import {castCustomType, castSimpleType, castType} from "./common.js";
+import {CAST_FN_TMPL, DATA_TYPE} from "../../constants.js";
 
 export function TypeCustom(customClass) {
     return function (target, name, description) {
@@ -31,7 +31,7 @@ export function TypeJsonObj(target, name, description) {
 
 export function TypeArr(type, customClass, format) {
     return function (target, name, description) {
-        let castType = (value, revert = false) => {
+        let castTypeFn = (value, revert = false) => {
             if (!value || !Array.isArray(value)) {
                 return [];
             } else {
@@ -48,7 +48,7 @@ export function TypeArr(type, customClass, format) {
             enumerable: false,
             configurable: false,
             writable: false,
-            value: castType
+            value: castTypeFn
         });
         return description;
     }

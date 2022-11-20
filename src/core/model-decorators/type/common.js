@@ -1,10 +1,17 @@
-import {mapper, model2json} from "../../mappers/core-mapper";
-import {formatDateTime, str2Date} from "../../utils/date-utils";
-import {DATA_TYPE} from '../../constants';
+import {formatDateTime, isDate, str2Date, str2DateTime, valueIsComplexType} from "../../utils/utils.js";
+import {DATA_TYPE} from '../../constants.js';
+import {c2jMapperWrapper, j2cMapperWrapper} from "../../mappers/index.js";
+import moment from "moment";
 
 export function castSimpleType(value, type) {
+    if (value === null || value === undefined) {
+        return value;
+    }
     if (type === DATA_TYPE.STRING) {
-        return String(value);
+        if (valueIsComplexType(value)) {
+            return JSON.stringify(value);
+        }
+        return value.toString();
     }
 
     if (type === DATA_TYPE.NUMBER) {
@@ -12,39 +19,65 @@ export function castSimpleType(value, type) {
     }
 
     if (type === DATA_TYPE.BOOL) {
-        return String(value) === 'true'
+        return value.toString() === 'true'
     }
 
     if (type === DATA_TYPE.YES_NO) {
-        return String(value) === 'Y'
+        return value.toString() === 'Y'
     }
 
     if (type === DATA_TYPE.OBJECT) {
-        return JSON.parse(JSON.stringify(value));
+        if (valueIsComplexType(value)) {
+            return JSON.parse(JSON.stringify(value));
+        }
+        if (typeof value === "string") {
+            let parsed;
+            try {
+                parsed = JSON.parse(value);
+                if (parsed !== value) {
+                    return parsed;
+                }
+            } catch (err) {
+                return null;
+            }
+        }
+        return null;
     }
 
     throw new Error(`Type ${type} is not supported`);
 }
 
-export function castDateType(value, type, format = "DD.MM.YYYY HH:mm:ss") {
-    if (type === DATA_TYPE.DATE) {
+export function castDateType(value, type, format = null) {
+    if (value === null || value === undefined) {
         return value;
+    }
+    if (!isDate(value, format)) {
+        return null;
+    }
+    if (type === DATA_TYPE.DATE) {
+        if (typeof value === "string") {
+            return str2Date(value, format)
+        }
+        return moment(value);
     }
 
     if (type === DATA_TYPE.DATE_TIME) {
-        return str2Date(formatDateTime(value), format);
+        if (typeof value === "string") {
+            return str2DateTime(value, format);
+        }
+        return str2DateTime(formatDateTime(value), format);
     }
 }
 
 export function castCustomType(value, customClass, revert = false) {
     if (!value && !revert) {
-        return mapper(new customClass(), customClass);
+        return j2cMapperWrapper(new customClass(), customClass);
     }
 
     if (revert) {
-        return model2json(value);
+        return c2jMapperWrapper(value);
     }
-    return mapper(value, customClass);
+    return j2cMapperWrapper(value, customClass);
 }
 
 export function castType(value, type, customClass, format, revert) {

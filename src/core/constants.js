@@ -21,3 +21,32 @@ export function JSON_NAME_TMPL(name) {
 }
 
 export const UUID_NAMESPACE = "ced6d513-4568-4edb-afca-9be143a83c16";
+
+export const KNOWN_FORMAT_DATE = [
+    "DD.MM.YYYY",
+    "DD-MM-YYYY",
+    "DD/MM/YYYY",
+    "YYYY-MM-DD",
+];
+
+export const KNOWN_FORMAT_DATETIME = [
+    "DD.MM.YYYY HH:mm:ss",
+    "DD-MM-YYYY HH:mm:ss",
+    "DD/MM/YYYY HH:mm:ss",
+    "YYYY-MM-DD HH:mm:ss",
+
+    "DD.MM.YYYY HH:mm:ssZ",
+    "DD-MM-YYYY HH:mm:ssZ",
+    "DD/MM/YYYY HH:mm:ssZ",
+    "YYYY-MM-DD HH:mm:ssZ",
+
+    "DD.MM.YYYYTHH:mm:ss",
+    "DD-MM-YYYYTHH:mm:ss",
+    "DD/MM/YYYYTHH:mm:ss",
+    "YYYY-MM-DDTHH:mm:ss",
+
+    "DD.MM.YYYYTHH:mm:ssZ",
+    "DD-MM-YYYYTHH:mm:ssZ",
+    "DD/MM/YYYYTHH:mm:ssZ",
+    "YYYY-MM-DDTHH:mm:ssZ",
+]
