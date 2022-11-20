@@ -14,7 +14,8 @@
         "lint": "npx eslint --fix ./"
     },
     "dependencies": {
-        "moment": "^2.29.4"
+        "moment": "^2.29.4",
+        "uuid": "^9.0.0"
     },
     "devDependencies": {
         "@babel/core": "^7.19.6",

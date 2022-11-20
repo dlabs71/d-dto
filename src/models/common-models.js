@@ -1,15 +1,15 @@
-import {JsonField, TypeDateTime, TypeNumber, TypeString} from "./annotation";
-import {mapper, model2json} from "../core/core-mapper";
+import {c2jMapperWrapper, j2cMapperWrapper} from "../core/mappers";
+import {JsonField, TypeDateTime, TypeNumber, TypeString} from "../core/model-decorators";
 
 class ModelExtension {
 
     $clone() {
-        let jsonObj = model2json(this);
-        return mapper(jsonObj, this.constructor);
+        let jsonObj = c2jMapperWrapper(this);
+        return j2cMapperWrapper(jsonObj, this.constructor);
     }
 
     $toString() {
-        return JSON.stringify(model2json(this));
+        return JSON.stringify(c2jMapperWrapper(this));
     }
 
     $equals(model) {
