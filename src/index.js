@@ -20,6 +20,7 @@ import {
     VuexGetMapper
 } from "./core/rest-decorators/index.js";
 import {BusinessDto, ModelExtension} from "./models/common-models.js";
+import {DATA_TYPE} from "./core/constants";
 
 export {
     c2jMapper,
@@ -46,5 +47,7 @@ export {
     VuexGetMapper,
 
     ModelExtension,
-    BusinessDto
+    BusinessDto,
+
+    DATA_TYPE
 }
