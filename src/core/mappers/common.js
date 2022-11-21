@@ -23,7 +23,7 @@ export function getJsonFieldProp(dtoAttr, dtoClass, skipIfNotDefine = false) {
         if (skipIfNotDefine) {
             return null;
         }
-        throw new Error(`Not found jsonFieldName for "${dtoAttr}" in ${JSON.stringify(dtoClass)}`);
+        throw new Error(`Not found jsonFieldName for "${dtoAttr}" in ${dtoClass.name}`);
     }
     return desc.value;
 }
