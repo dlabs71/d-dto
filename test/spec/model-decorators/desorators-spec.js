@@ -66,7 +66,7 @@ describe("model decorator tests. Decorators", () => {
 
     it("simple decorator DATE", () => {
         class Model {
-            @TypeDate data;
+            @TypeDate() data;
         }
 
         testTypeDecorator(Model);
@@ -77,7 +77,7 @@ describe("model decorator tests. Decorators", () => {
 
     it("simple decorator DATETIME", () => {
         class Model {
-            @TypeDateTime data;
+            @TypeDateTime() data;
         }
 
         testTypeDecorator(Model);

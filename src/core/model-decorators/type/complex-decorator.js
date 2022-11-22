@@ -3,7 +3,7 @@ import {CAST_FN_TMPL, DATA_TYPE} from "../../constants.js";
 
 export function TypeCustom(customClass) {
     return function (target, name, description) {
-        let castType = (value, revert) => {
+        let castType = (value, revert = false) => {
             return castCustomType(value, customClass, revert);
         };
         Object.defineProperty(target, CAST_FN_TMPL(name), {
@@ -17,8 +17,8 @@ export function TypeCustom(customClass) {
 }
 
 export function TypeJsonObj(target, name, description) {
-    let castType = (value) => {
-        return castSimpleType(value, DATA_TYPE.OBJECT);
+    let castType = (value, revert = false) => {
+        return castSimpleType(value, DATA_TYPE.OBJECT, revert);
     };
     Object.defineProperty(target, CAST_FN_TMPL(name), {
         enumerable: false,

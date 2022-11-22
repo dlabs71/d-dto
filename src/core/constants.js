@@ -49,4 +49,7 @@ export const KNOWN_FORMAT_DATETIME = [
     "DD-MM-YYYYTHH:mm:ssZ",
     "DD/MM/YYYYTHH:mm:ssZ",
     "YYYY-MM-DDTHH:mm:ssZ",
-]
+];
+
+export const DEFAULT_FORMAT_DATE = "YYYY-MM-DD";
+export const DEFAULT_FORMAT_DATETIME = "YYYY-MM-DDTHH:mm:ssZ";

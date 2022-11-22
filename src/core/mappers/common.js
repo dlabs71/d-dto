@@ -13,7 +13,7 @@ export function findPropertyDescription(attrName, clazz) {
             proto = proto.__proto__;
         }
     }
-    return attrDescription;
+    return attrDescription || null;
 }
 
 
@@ -41,11 +41,11 @@ export function getProperty(dataObj, fieldName, castTypeFn = null) {
         castTypeFn = (value) => value;
     }
     if (Array.isArray(fieldName)) {
-        fieldName.filter(key => {
+        for (let key of fieldName) {
             if (key in dataObj) {
                 return castTypeFn(dataObj[key]);
             }
-        });
+        }
     } else {
         return castTypeFn(dataObj[fieldName]);
     }
@@ -58,7 +58,7 @@ export function getPropertyFromDto(dtoModel, dtoAttr) {
         castFn = (value) => value;
     }
     if (dtoAttr in dtoModel) {
-        return castFn(dtoModel[dtoAttr]);
+        return castFn(dtoModel[dtoAttr], true);
     }
     return null;
 }

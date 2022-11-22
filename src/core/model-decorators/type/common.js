@@ -1,9 +1,9 @@
 import {formatDateTime, isDate, str2Date, str2DateTime, valueIsComplexType} from "../../utils/utils.js";
-import {DATA_TYPE} from '../../constants.js';
+import {DATA_TYPE, DEFAULT_FORMAT_DATE, DEFAULT_FORMAT_DATETIME} from '../../constants.js';
 import {c2jMapperWrapper, j2cMapperWrapper} from "../../mappers/index.js";
 import moment from "moment";
 
-export function castSimpleType(value, type) {
+export function castSimpleType(value, type, revert = false) {
     if (value === null || value === undefined) {
         return value;
     }
@@ -23,6 +23,9 @@ export function castSimpleType(value, type) {
     }
 
     if (type === DATA_TYPE.YES_NO) {
+        if (revert) {
+            return ["true", "Y", "1"].includes(value.toString()) ? "Y" : "N";
+        }
         return value.toString() === 'Y'
     }
 
@@ -47,7 +50,7 @@ export function castSimpleType(value, type) {
     throw new Error(`Type ${type} is not supported`);
 }
 
-export function castDateType(value, type, format = null) {
+function _castDateType(value, type, format = null) {
     if (value === null || value === undefined) {
         return value;
     }
@@ -69,6 +72,33 @@ export function castDateType(value, type, format = null) {
     }
 }
 
+function _castDateTypeRevert(value, type, format = null) {
+    if (value === null || value === undefined) {
+        return null;
+    }
+    if (!isDate(value, format)) {
+        return null;
+    }
+    if (typeof value === "string") {
+        return value;
+    }
+
+    if (type === DATA_TYPE.DATE) {
+        return moment(value).format(format || DEFAULT_FORMAT_DATE);
+    }
+
+    if (type === DATA_TYPE.DATE_TIME) {
+        return moment(value).format(format || DEFAULT_FORMAT_DATETIME);
+    }
+}
+
+export function castDateType(value, type, format = null, revert = false) {
+    if (revert) {
+        return _castDateTypeRevert(value, type, format);
+    }
+    return _castDateType(value, type, format);
+}
+
 export function castCustomType(value, customClass, revert = false) {
     if (!value && !revert) {
         return j2cMapperWrapper(new customClass(), customClass);
@@ -80,7 +110,7 @@ export function castCustomType(value, customClass, revert = false) {
     return j2cMapperWrapper(value, customClass);
 }
 
-export function castType(value, type, customClass, format, revert) {
+export function castType(value, type, customClass, format = null, revert = false) {
     if (type == null) {
         throw new Error("Type for cast is null")
     }
@@ -88,8 +118,8 @@ export function castType(value, type, customClass, format, revert) {
         return castCustomType(value, customClass, revert);
     }
     if ([DATA_TYPE.DATE, DATA_TYPE.DATE_TIME].includes(type)) {
-        return castDateType(value, type, format);
+        return castDateType(value, type, format, revert);
     }
 
-    return castSimpleType(value, type);
+    return castSimpleType(value, type, revert);
 }

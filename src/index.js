@@ -32,11 +32,11 @@ export {
     TypeString,
     TypeNumber,
     TypeBool,
-    TypeCustom,
+    TypeYesNo,
     TypeDate,
     TypeDateTime,
     TypeJsonObj,
-    TypeYesNo,
+    TypeCustom,
     TypeArr,
 
     GetMapper,
