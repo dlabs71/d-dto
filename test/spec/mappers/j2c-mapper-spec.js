@@ -136,5 +136,42 @@ describe("J2C: json to dto class", () => {
         let dtoArr = j2cMapperWrapper(jsonArr, PersonDto);
         expect(dtoArr.length).toEqual(3);
         expect(dtoArr[1].firstName).toEqual("Alex");
+
+        class Model {
+            @JsonField("first_name") @TypeString firstName;
+            @JsonField("second_name") @TypeString secondName;
+            @JsonField("age") @TypeNumber age;
+            addedField = "addedField";
+        }
+
+        expect(() => j2cMapperWrapper(sourceJson, Model)).toThrow(jasmine.any(Error));
+        expect(j2cMapperWrapper(sourceJson, Model, true).addedField).toEqual("addedField");
+    });
+
+    it("after and before hooks", () => {
+        let sourceJson = {
+            first_name: "Danila",
+            second_name: "Ivanov",
+            age: 24
+        };
+
+        class Model {
+            @JsonField("first_name") @TypeString firstName;
+            @JsonField("second_name") @TypeString secondName;
+            @JsonField("age") @TypeNumber age;
+
+            beforeJ2cMapping(jsonObj, dtoModel) {
+                this.beforeJ2c = jsonObj["first_name"];
+            }
+
+            afterJ2cMapping(jsonObj, dtoModel) {
+                this.afterJ2c = jsonObj["second_name"];
+            }
+        }
+
+        let dto = j2cMapperWrapper(sourceJson, Model, true);
+        expect(dto).toBeInstanceOf(Model);
+        expect(dto.beforeJ2c).toEqual("Danila");
+        expect(dto.afterJ2c).toEqual("Ivanov");
     });
 });

@@ -28,7 +28,7 @@ export function j2cMapper(jsonObj, dtoModel, skipNotDefine = false) {
     return dto;
 }
 
-export function j2cMapperWrapper(jsonObj, dtoModel) {
+export function j2cMapperWrapper(jsonObj, dtoModel, skipNotDefine = false) {
     if (!dtoModel) {
         throw new Error("Model is required attribute!")
     }
@@ -40,8 +40,8 @@ export function j2cMapperWrapper(jsonObj, dtoModel) {
     }
     if (Array.isArray(jsonObj)) {
         return jsonObj.map(item => {
-            return j2cMapper(item, dtoModel);
+            return j2cMapper(item, dtoModel, skipNotDefine);
         });
     }
-    return j2cMapper(jsonObj, dtoModel);
+    return j2cMapper(jsonObj, dtoModel, skipNotDefine);
 }

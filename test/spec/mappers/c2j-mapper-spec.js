@@ -108,4 +108,40 @@ describe("C2J: dto class to json", () => {
             age: 24
         });
     });
+
+    it("after and before hooks", () => {
+        let sourceJson = {
+            first_name: "Danila",
+            second_name: "Ivanov",
+            age: 24
+        };
+
+        class Model {
+            @JsonField("first_name") @TypeString firstName;
+            @JsonField("second_name") @TypeString secondName;
+            @JsonField("age") @TypeNumber age;
+
+            beforeC2jMapping(dtoModel, resultJsonObj) {
+                resultJsonObj["beforeC2j"] = "beforeC2j";
+            }
+
+            afterC2jMapping(dtoModel, resultJsonObj) {
+                resultJsonObj["afterC2j"] = "afterC2j";
+            }
+
+            static createInstance(firstName, secondName, age) {
+                let dto = new Model();
+                dto.firstName = firstName;
+                dto.secondName = secondName;
+                dto.age = age;
+                return dto;
+            }
+        }
+
+        let dto = Model.createInstance("Danila", "Ivanov", 24);
+        let json = c2jMapperWrapper(dto, true);
+        expect(json).toBeInstanceOf(Object);
+        expect(json.beforeC2j).toEqual("beforeC2j");
+        expect(json.afterC2j).toEqual("afterC2j");
+    });
 });
