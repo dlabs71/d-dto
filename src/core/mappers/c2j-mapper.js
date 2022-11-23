@@ -32,7 +32,7 @@ export function c2jMapper(dtoModel, skipIfNotDefine = false) {
 
 export function c2jMapperWrapper(dtoModel, skipIfNotDefine = false) {
     if (!dtoModel) {
-        return null;
+        return dtoModel;
     }
     if (Array.isArray(dtoModel)) {
         return dtoModel.map(item => {

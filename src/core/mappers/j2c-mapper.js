@@ -36,7 +36,7 @@ export function j2cMapperWrapper(jsonObj, dtoModel) {
         return jsonObj;
     }
     if (!jsonObj) {
-        return undefined;
+        return jsonObj;
     }
     if (Array.isArray(jsonObj)) {
         return jsonObj.map(item => {

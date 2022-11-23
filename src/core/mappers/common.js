@@ -23,7 +23,9 @@ export function getJsonFieldProp(dtoAttr, dtoClass, skipIfNotDefine = false) {
         if (skipIfNotDefine) {
             return null;
         }
-        throw new Error(`Not found jsonFieldName for "${dtoAttr}" in ${dtoClass.name}`);
+
+        let className = dtoClass.name || (typeof dtoClass === "object" && JSON.stringify(dtoClass)) || dtoClass;
+        throw new Error(`Not found jsonFieldName for "${dtoAttr}" in ${className}`);
     }
     return desc.value;
 }

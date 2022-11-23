@@ -22,7 +22,7 @@ function testTypeDecorator(modelClass, nameProperty = "&_data_castFn") {
     expect(descriptor.writable).toEqual(false);
 }
 
-describe("model decorator tests. Decorators", () => {
+xdescribe("model decorator tests. Decorators", () => {
 
     it("simple decorator STRING", () => {
         class Model {
