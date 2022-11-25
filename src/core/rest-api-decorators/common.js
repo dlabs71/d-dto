@@ -3,16 +3,22 @@ import {v5 as uuidV5} from "uuid";
 import {UUID_NAMESPACE} from "../constants.js";
 
 export function convertResponse(modelResponse, originalMethod, args) {
+    let convert = (result) => {
+        if (result.data) {
+            return j2cMapperWrapper(result.data, modelResponse);
+        } else {
+            return j2cMapperWrapper(result, modelResponse);
+        }
+    };
+
     let result = originalMethod.call(this, ...args);
     if (result instanceof Promise) {
         return result.then((result) => {
-            if (result.data) {
-                return j2cMapperWrapper(result.data, modelResponse);
-            }
+            return convert(result);
         });
     }
 
-    return j2cMapperWrapper(result, modelResponse);
+    return convert(result);
 }
 
 export function convertArgs(args, dtoArgNumber) {
@@ -54,7 +60,7 @@ export function checkSeparateCondition(separateStorageConf, args) {
 
 export function createLookupId(baseData) {
     let baseDataStr;
-    if (Array.isArray(baseData) || baseData instanceof "object") {
+    if (Array.isArray(baseData) || typeof baseData === "object") {
         baseDataStr = JSON.stringify(baseData);
     } else {
         baseDataStr = String(baseData);

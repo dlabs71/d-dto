@@ -18,7 +18,7 @@ import {
     PutMapper,
     StorableGetMapper,
     VuexGetMapper
-} from "./core/rest-decorators/index.js";
+} from "./core/rest-api-decorators/index.js";
 import {BusinessDto, ModelExtension} from "./models/common-models.js";
 import {DATA_TYPE} from "./core/constants";
 
