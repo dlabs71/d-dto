@@ -1,37 +1,36 @@
-import {CAST_FN_TMPL, JSON_NAME_TMPL} from "../constants.js";
+import { CAST_FN_TMPL, JSON_NAME_TMPL } from '../constants.js';
 
 export function findPropertyDescription(attrName, clazz) {
-    let proto = clazz.prototype || clazz.__proto__;
+    let proto = clazz.prototype || Object.getPrototypeOf(clazz);
     let attrDescription = Object.getOwnPropertyDescriptor(proto, attrName);
     if (!attrDescription) {
-        proto = proto.__proto__;
+        proto = Object.getPrototypeOf(proto);
         while (!attrDescription && !!proto) {
             attrDescription = Object.getOwnPropertyDescriptor(proto, attrName);
-            if (!!attrDescription) {
+            if (attrDescription) {
                 break;
             }
-            proto = proto.__proto__;
+            proto = Object.getPrototypeOf(proto);
         }
     }
     return attrDescription || null;
 }
 
-
 export function getJsonFieldProp(dtoAttr, dtoClass, skipIfNotDefine = false) {
-    let desc = findPropertyDescription(JSON_NAME_TMPL(dtoAttr), dtoClass);
+    const desc = findPropertyDescription(JSON_NAME_TMPL(dtoAttr), dtoClass);
     if (!desc) {
         if (skipIfNotDefine) {
             return null;
         }
 
-        let className = dtoClass.name || (typeof dtoClass === "object" && JSON.stringify(dtoClass)) || dtoClass;
+        const className = dtoClass.name || (typeof dtoClass === 'object' && JSON.stringify(dtoClass)) || dtoClass;
         throw new Error(`Not found jsonFieldName for "${dtoAttr}" in ${className}`);
     }
     return desc.value;
 }
 
 export function getCastTypeProp(dtoAttr, dtoClass) {
-    let desc = findPropertyDescription(CAST_FN_TMPL(dtoAttr), dtoClass);
+    const desc = findPropertyDescription(CAST_FN_TMPL(dtoAttr), dtoClass);
     if (!desc) {
         return null;
     }
@@ -43,7 +42,8 @@ export function getProperty(dataObj, fieldName, castTypeFn = null) {
         castTypeFn = (value) => value;
     }
     if (Array.isArray(fieldName)) {
-        for (let key of fieldName) {
+        /* eslint-disable-next-line */
+        for (const key of fieldName) {
             if (key in dataObj) {
                 return castTypeFn(dataObj[key]);
             }

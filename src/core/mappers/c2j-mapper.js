@@ -1,18 +1,16 @@
-import {PREFIX_PROPERTY_EX} from "../constants.js";
-import {getJsonFieldProp, getPropertyFromDto} from "./common.js";
+import { PREFIX_PROPERTY_EX } from '../constants.js';
+import { getJsonFieldProp, getPropertyFromDto } from './common.js';
 
 export function c2jMapper(dtoModel, skipIfNotDefine = false) {
-    let resultJsonObj = {};
+    const resultJsonObj = {};
 
     if (dtoModel.beforeC2jMapping) {
         dtoModel.beforeC2jMapping(dtoModel, resultJsonObj);
     }
 
     Object.keys(dtoModel)
-        .filter(item => {
-            return PREFIX_PROPERTY_EX.filter(prefix => item.startsWith(prefix)).length === 0;
-        })
-        .forEach(dtoAttr => {
+        .filter((item) => PREFIX_PROPERTY_EX.filter((prefix) => item.startsWith(prefix)).length === 0)
+        .forEach((dtoAttr) => {
             let jsonFieldName = getJsonFieldProp(dtoAttr, dtoModel, skipIfNotDefine);
             if (!jsonFieldName) {
                 return;
@@ -35,9 +33,7 @@ export function c2jMapperWrapper(dtoModel, skipIfNotDefine = false) {
         return dtoModel;
     }
     if (Array.isArray(dtoModel)) {
-        return dtoModel.map(item => {
-            return c2jMapper(item, skipIfNotDefine);
-        });
+        return dtoModel.map((item) => c2jMapper(item, skipIfNotDefine));
     }
     return c2jMapper(dtoModel, skipIfNotDefine);
 }

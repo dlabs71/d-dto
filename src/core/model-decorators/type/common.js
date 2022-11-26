@@ -1,7 +1,9 @@
-import {formatDateTime, isDate, str2Date, str2DateTime, valueIsComplexType} from "../../utils/utils.js";
-import {DATA_TYPE, DEFAULT_FORMAT_DATE, DEFAULT_FORMAT_DATETIME} from '../../constants.js';
-import {c2jMapperWrapper, j2cMapperWrapper} from "../../mappers/index.js";
-import moment from "moment";
+import moment from 'moment';
+import {
+    formatDateTime, isDate, str2Date, str2DateTime, valueIsComplexType,
+} from '../../utils/utils.js';
+import { DATA_TYPE, DEFAULT_FORMAT_DATE, DEFAULT_FORMAT_DATETIME } from '../../constants.js';
+import { c2jMapperWrapper, j2cMapperWrapper } from '../../mappers/index.js';
 
 export function castSimpleType(value, type, revert = false) {
     if (value === null || value === undefined) {
@@ -19,21 +21,21 @@ export function castSimpleType(value, type, revert = false) {
     }
 
     if (type === DATA_TYPE.BOOL) {
-        return value.toString() === 'true'
+        return value.toString() === 'true';
     }
 
     if (type === DATA_TYPE.YES_NO) {
         if (revert) {
-            return ["true", "Y", "1"].includes(value.toString()) ? "Y" : "N";
+            return ['true', 'Y', '1'].includes(value.toString()) ? 'Y' : 'N';
         }
-        return value.toString() === 'Y'
+        return value.toString() === 'Y';
     }
 
     if (type === DATA_TYPE.OBJECT) {
         if (valueIsComplexType(value)) {
             return JSON.parse(JSON.stringify(value));
         }
-        if (typeof value === "string") {
+        if (typeof value === 'string') {
             let parsed;
             try {
                 parsed = JSON.parse(value);
@@ -58,18 +60,19 @@ function _castDateType(value, type, format = null) {
         return null;
     }
     if (type === DATA_TYPE.DATE) {
-        if (typeof value === "string") {
-            return str2Date(value, format)
+        if (typeof value === 'string') {
+            return str2Date(value, format);
         }
         return moment(value);
     }
 
     if (type === DATA_TYPE.DATE_TIME) {
-        if (typeof value === "string") {
+        if (typeof value === 'string') {
             return str2DateTime(value, format);
         }
         return str2DateTime(formatDateTime(value), format);
     }
+    return null;
 }
 
 function _castDateTypeRevert(value, type, format = null) {
@@ -79,7 +82,7 @@ function _castDateTypeRevert(value, type, format = null) {
     if (!isDate(value, format)) {
         return null;
     }
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
         return value;
     }
 
@@ -90,6 +93,7 @@ function _castDateTypeRevert(value, type, format = null) {
     if (type === DATA_TYPE.DATE_TIME) {
         return moment(value).format(format || DEFAULT_FORMAT_DATETIME);
     }
+    return null;
 }
 
 export function castDateType(value, type, format = null, revert = false) {
@@ -99,20 +103,20 @@ export function castDateType(value, type, format = null, revert = false) {
     return _castDateType(value, type, format);
 }
 
-export function castCustomType(value, customClass, revert = false) {
+export function castCustomType(value, CustomClass, revert = false) {
     if (!value && !revert) {
-        return j2cMapperWrapper(new customClass(), customClass);
+        return j2cMapperWrapper(new CustomClass(), CustomClass);
     }
 
     if (revert) {
         return c2jMapperWrapper(value);
     }
-    return j2cMapperWrapper(value, customClass);
+    return j2cMapperWrapper(value, CustomClass);
 }
 
 export function castType(value, type, customClass, format = null, revert = false) {
     if (type == null) {
-        throw new Error("Type for cast is null")
+        throw new Error('Type for cast is null');
     }
     if (type === DATA_TYPE.CUSTOM) {
         return castCustomType(value, customClass, revert);

@@ -1,64 +1,63 @@
-import {j2cMapperWrapper} from "../mappers/index.js";
-import {checkSeparateCondition, createLookupId} from "./common.js";
+import { j2cMapperWrapper } from '../mappers/index.js';
+import { checkSeparateCondition, createLookupId, getDataFromObject } from './common.js';
 
 export function StorableGetMapper(
     modelResponse,
     separateStorageConf = null,
+    /* eslint-disable-next-line */
     saveToStoreFn = (data) => {
     },
     getFromStoreFn = () => {
-    }
+    },
+    pathToData = 'data',
 ) {
     return (target, property, descriptor) => {
         const originalMethod = descriptor.value;
-        descriptor.value = function (...args) {
-            let argSeparateValue = checkSeparateCondition(separateStorageConf, args);
+        descriptor.value = (...args) => {
+            const argSeparateValue = checkSeparateCondition(separateStorageConf, args);
 
             if (argSeparateValue !== null) {
                 if (!argSeparateValue) {
                     return originalMethod.call(this, ...args).then((result) => {
-                        if (result.data) {
-                            return j2cMapperWrapper(result.data, modelResponse);
-                        }
+                        const data = getDataFromObject(result, pathToData);
+                        return j2cMapperWrapper(data, modelResponse);
                     });
                 }
                 // for separated by argument value lookup
-                let lookupId = createLookupId(argSeparateValue);
+                const lookupId = createLookupId(argSeparateValue);
                 let storedLookup = getFromStoreFn();
                 if (!!storedLookup && !!storedLookup[lookupId]) {
-                    return new Promise(resolve => {
+                    return new Promise((resolve) => {
                         resolve(j2cMapperWrapper(storedLookup[lookupId], modelResponse));
                     });
                 }
                 return originalMethod.call(this, ...args).then((result) => {
-                    if (result.data) {
-                        if (!storedLookup) {
-                            storedLookup = {};
-                        }
-
-                        storedLookup[lookupId] = result.data;
-                        saveToStoreFn(storedLookup)
-                        return j2cMapperWrapper(result.data, modelResponse);
+                    const data = getDataFromObject(result, pathToData);
+                    if (!storedLookup) {
+                        storedLookup = {};
                     }
+
+                    storedLookup[lookupId] = data;
+                    saveToStoreFn(storedLookup);
+                    return j2cMapperWrapper(data, modelResponse);
                 });
             }
 
             // for not separated lookup
-            let storedLookup = getFromStoreFn();
-            if (!!storedLookup) {
-                return new Promise(resolve => {
+            const storedLookup = getFromStoreFn();
+            if (storedLookup) {
+                return new Promise((resolve) => {
                     resolve(j2cMapperWrapper(storedLookup, modelResponse));
                 });
             }
             return originalMethod.call(this, ...args).then((result) => {
-                if (result.data) {
-                    saveToStoreFn(result.data);
-                    return j2cMapperWrapper(result.data, modelResponse);
-                }
+                const data = getDataFromObject(result, pathToData);
+                saveToStoreFn(data);
+                return j2cMapperWrapper(data, modelResponse);
             });
         };
         return descriptor;
-    }
+    };
 }
 
 export function VuexGetMapper(
@@ -66,18 +65,16 @@ export function VuexGetMapper(
     modelResponse,
     lookupName,
     separateStorageConf = null,
+    pathToData = 'data',
 ) {
     return StorableGetMapper(
         modelResponse,
         separateStorageConf,
-        (data) => {
-            return store.dispatch('setLookup', {
-                name: lookupName,
-                data: data
-            });
-        },
-        () => {
-            return store.getters.getLookup(lookupName);
-        }
+        (data) => store.dispatch('setLookup', {
+            name: lookupName,
+            data,
+        }),
+        () => store.getters.getLookup(lookupName),
+        pathToData,
     );
 }

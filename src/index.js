@@ -1,4 +1,6 @@
-import {c2jMapper, c2jMapperWrapper, j2cMapper, j2cMapperWrapper} from "./core/mappers/index.js";
+import {
+    c2jMapper, c2jMapperWrapper, j2cMapper, j2cMapperWrapper,
+} from './core/mappers/index.js';
 import {
     JsonField,
     TypeArr,
@@ -9,18 +11,18 @@ import {
     TypeJsonObj,
     TypeNumber,
     TypeString,
-    TypeYesNo
-} from "./core/model-decorators/index.js";
+    TypeYesNo,
+} from './core/model-decorators/index.js';
 import {
     DeleteMapper,
     GetMapper,
     PostMapper,
     PutMapper,
     StorableGetMapper,
-    VuexGetMapper
-} from "./core/rest-api-decorators/index.js";
-import {BusinessDto, ModelExtension} from "./models/common-models.js";
-import {DATA_TYPE} from "./core/constants";
+    VuexGetMapper,
+} from './core/rest-api-decorators/index.js';
+import { BusinessDto, ModelExtension } from './models/common-models.js';
+import { DATA_TYPE } from './core/constants';
 
 export {
     c2jMapper,
@@ -49,5 +51,5 @@ export {
     ModelExtension,
     BusinessDto,
 
-    DATA_TYPE
-}
+    DATA_TYPE,
+};

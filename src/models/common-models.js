@@ -1,10 +1,11 @@
-import {c2jMapperWrapper, j2cMapperWrapper} from "../core/mappers/index.js";
-import {JsonField, TypeDateTime, TypeNumber, TypeString} from "../core/model-decorators/index.js";
+import { c2jMapperWrapper, j2cMapperWrapper } from '../core/mappers/index.js';
+import {
+    JsonField, TypeDateTime, TypeNumber, TypeString,
+} from '../core/model-decorators/index.js';
 
 class ModelExtension {
-
     $clone() {
-        let jsonObj = c2jMapperWrapper(this);
+        const jsonObj = c2jMapperWrapper(this);
         return j2cMapperWrapper(jsonObj, this.constructor);
     }
 
@@ -18,11 +19,15 @@ class ModelExtension {
 }
 
 class BusinessDto extends ModelExtension {
-    @JsonField("createdBy") @TypeString createdBy;
-    @JsonField("creationDate") @TypeDateTime creationDate;
-    @JsonField("lastUpdatedBy") @TypeString lastUpdatedBy;
-    @JsonField("lastUpdateDate") @TypeDateTime lastUpdateDate;
-    @JsonField("version") @TypeNumber version;
+    @JsonField('createdBy') @TypeString createdBy;
+
+    @JsonField('creationDate') @TypeDateTime creationDate;
+
+    @JsonField('lastUpdatedBy') @TypeString lastUpdatedBy;
+
+    @JsonField('lastUpdateDate') @TypeDateTime lastUpdateDate;
+
+    @JsonField('version') @TypeNumber version;
 }
 
-export {BusinessDto, ModelExtension}
+export { BusinessDto, ModelExtension };

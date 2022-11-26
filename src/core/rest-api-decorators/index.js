@@ -1,5 +1,7 @@
-import {DeleteMapper, GetMapper, PostMapper, PutMapper} from "./rest-decorators.js";
-import {StorableGetMapper, VuexGetMapper} from "./storable-rest-decorators.js";
+import {
+    DeleteMapper, GetMapper, PostMapper, PutMapper,
+} from './rest-decorators.js';
+import { StorableGetMapper, VuexGetMapper } from './storable-rest-decorators.js';
 
 export {
     GetMapper,
@@ -7,5 +9,5 @@ export {
     DeleteMapper,
     PutMapper,
     StorableGetMapper,
-    VuexGetMapper
-}
+    VuexGetMapper,
+};

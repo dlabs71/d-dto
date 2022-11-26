@@ -1,16 +1,17 @@
 import moment from 'moment';
-import {KNOWN_FORMAT_DATE, KNOWN_FORMAT_DATETIME} from "../constants.js";
+import { KNOWN_FORMAT_DATE, KNOWN_FORMAT_DATETIME } from '../constants.js';
 
 function _str2Date(value, defaultFormats, format = null) {
     if (!format) {
-        for (let _format of defaultFormats) {
-            let date = moment(value, _format, true);
-            let valid = date.isValid();
+        /* eslint-disable-next-line */
+        for (const _format of defaultFormats) {
+            const date = moment(value, _format, true);
+            const valid = date.isValid();
             if (valid) {
                 return date;
             }
         }
-        throw new Error(`Value = ${value} is not a valid date time`)
+        throw new Error(`Value = ${value} is not a valid date time`);
     }
     return moment(value, format, true);
 }
@@ -24,7 +25,7 @@ export function str2DateTime(value, format = null) {
 }
 
 export function formatDateTime(dateValue, format = null) {
-    return !!dateValue ? moment(dateValue).format(format) : null;
+    return dateValue ? moment(dateValue).format(format) : null;
 }
 
 export function validate(date) {
@@ -52,5 +53,5 @@ export function isDate(date, format = null) {
 }
 
 export function valueIsComplexType(value) {
-    return Array.isArray(value) || typeof value === "object";
+    return Array.isArray(value) || typeof value === 'object';
 }

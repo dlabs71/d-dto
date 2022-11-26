@@ -1,19 +1,20 @@
-import {c2jMapperWrapper, j2cMapperWrapper} from "../mappers/index.js";
-import {v5 as uuidV5} from "uuid";
-import {UUID_NAMESPACE} from "../constants.js";
+import { v5 as uuidV5 } from 'uuid';
+import { c2jMapperWrapper, j2cMapperWrapper } from '../mappers/index.js';
+import { UUID_NAMESPACE } from '../constants.js';
 
 export function getDataFromObject(obj, pathToField = null) {
     if (!pathToField) {
         return obj;
     }
-    if (!pathToField.includes(".")) {
+    if (!pathToField.includes('.')) {
         if (!(pathToField in obj)) {
             return null;
         }
         return obj[pathToField];
     }
     let data = obj;
-    for (let field of pathToField.split(".")) {
+    /* eslint-disable-next-line */
+    for (const field of pathToField.split('.')) {
         if (!data) {
             return null;
         }
@@ -23,44 +24,42 @@ export function getDataFromObject(obj, pathToField = null) {
 }
 
 export function convertResponse(modelResponse, originalMethod, pathToData, args) {
-    let convert = (result) => {
-        let data = getDataFromObject(result, pathToData);
+    const convert = (result) => {
+        const data = getDataFromObject(result, pathToData);
         return j2cMapperWrapper(data, modelResponse);
     };
 
-    let result = originalMethod.call(this, ...args);
+    const result = originalMethod.call(this, ...args);
     if (result instanceof Promise) {
-        return result.then((result) => {
-            return convert(result);
-        });
+        return result.then((res) => convert(res));
     }
 
     return convert(result);
 }
 
 export function convertArgs(args, dtoArgNumber) {
-    let dtoArg = args[dtoArgNumber];
-    let json = c2jMapperWrapper(dtoArg);
-    let newArgs = Array.from(args);
+    const dtoArg = args[dtoArgNumber];
+    const json = c2jMapperWrapper(dtoArg);
+    const newArgs = Array.from(args);
     newArgs[dtoArgNumber] = json;
     return newArgs;
 }
 
 export function checkSeparateCondition(separateStorageConf, args) {
     if (separateStorageConf != null && typeof separateStorageConf === 'object') {
-        let argIdx = separateStorageConf['argIdx'];
+        const { argIdx } = separateStorageConf;
         if (argIdx !== null || argIdx !== undefined) {
-            let conditions = separateStorageConf['conditions'];
+            const { conditions } = separateStorageConf;
 
             if (!conditions) {
                 return args[argIdx];
             }
 
             if (conditions) {
-                let executeConditions = Object.keys(conditions).filter(argKey => {
-                    if (argKey.startsWith("arg_")) {
-                        let argIdx = Number.parseInt(argKey.split('_')[1]);
-                        return conditions[argKey](args[argIdx])
+                const executeConditions = Object.keys(conditions).filter((argKey) => {
+                    if (argKey.startsWith('arg_')) {
+                        const argMethodIdx = Number.parseInt(argKey.split('_')[1], 10);
+                        return conditions[argKey](args[argMethodIdx]);
                     }
                     return false;
                 });
@@ -77,7 +76,7 @@ export function checkSeparateCondition(separateStorageConf, args) {
 
 export function createLookupId(baseData) {
     let baseDataStr;
-    if (Array.isArray(baseData) || typeof baseData === "object") {
+    if (Array.isArray(baseData) || typeof baseData === 'object') {
         baseDataStr = JSON.stringify(baseData);
     } else {
         baseDataStr = String(baseData);

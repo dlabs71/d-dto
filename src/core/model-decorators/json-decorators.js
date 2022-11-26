@@ -1,4 +1,4 @@
-import {JSON_NAME_TMPL} from "../constants.js";
+import { JSON_NAME_TMPL } from '../constants.js';
 
 export function JsonField(fieldName) {
     return (targetObject, name, description) => {
@@ -6,8 +6,8 @@ export function JsonField(fieldName) {
             enumerable: false,
             configurable: false,
             writable: false,
-            value: fieldName
+            value: fieldName,
         });
         return description;
-    }
+    };
 }

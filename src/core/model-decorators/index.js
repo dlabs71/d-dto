@@ -1,7 +1,8 @@
-import {JsonField} from './json-decorators.js';
-import {TypeArr, TypeCustom, TypeJsonObj} from './type/complex-decorator.js';
-import {TypeBool, TypeDate, TypeDateTime, TypeNumber, TypeString, TypeYesNo,} from './type/simple-decorators.js';
-
+import { JsonField } from './json-decorators.js';
+import { TypeArr, TypeCustom, TypeJsonObj } from './type/complex-decorator.js';
+import {
+    TypeBool, TypeDate, TypeDateTime, TypeNumber, TypeString, TypeYesNo,
+} from './type/simple-decorators.js';
 
 export {
     JsonField,
@@ -13,5 +14,5 @@ export {
     TypeDateTime,
     TypeArr,
     TypeCustom,
-    TypeJsonObj
+    TypeJsonObj,
 };
