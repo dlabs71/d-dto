@@ -15,7 +15,7 @@ import {
 } from "../../../src";
 import moment from "moment";
 
-xdescribe("J2C: json to dto class", () => {
+describe("J2C: json to dto class", () => {
 
     let sourceJson = {
         prop_str: "qwerty",

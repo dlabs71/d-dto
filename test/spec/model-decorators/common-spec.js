@@ -3,7 +3,7 @@ import {DATA_TYPE} from "../../../src/core/constants.js";
 import moment from "moment";
 import {JsonField, TypeNumber, TypeString} from "../../../src";
 
-xdescribe("model decorator tests. Common functions", () => {
+describe("model decorator tests. Common functions", () => {
 
     it("castSimpleType with type STRING", () => {
         let castWrapper = (value) => {

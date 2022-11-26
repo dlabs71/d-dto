@@ -1,16 +1,21 @@
 import {convertArgs, convertResponse} from "./common.js";
 
-export function GetMapper(modelResponse) {
+export function GetMapper(modelResponse, pathToData = "data") {
     return (target, property, descriptor) => {
         const originalMethod = descriptor.value;
         descriptor.value = (...args) => {
-            return convertResponse(modelResponse, originalMethod, args);
+            return convertResponse(modelResponse, originalMethod, pathToData, args);
         };
         return descriptor;
     }
 }
 
-export function PostMapper(modelRequest, modelResponse = null, dtoArgNumber = 0) {
+export function PostMapper(
+    modelRequest,
+    modelResponse = null,
+    dtoArgNumber = 0,
+    pathToData = "data"
+) {
     if (!modelResponse) {
         modelResponse = modelRequest;
     }
@@ -18,16 +23,21 @@ export function PostMapper(modelRequest, modelResponse = null, dtoArgNumber = 0)
         const originalMethod = descriptor.value;
         descriptor.value = function (...args) {
             let newArgs = convertArgs(args, dtoArgNumber);
-            return convertResponse(modelResponse, originalMethod, newArgs);
+            return convertResponse(modelResponse, originalMethod, pathToData, newArgs);
         };
         return descriptor;
     }
 }
 
-export function PutMapper(modelRequest, modelResponse = null, dtoArgNumber = 0) {
-    return PostMapper(modelRequest, modelResponse, dtoArgNumber);
+export function PutMapper(
+    modelRequest,
+    modelResponse = null,
+    dtoArgNumber = 0,
+    pathToData = "data"
+) {
+    return PostMapper(modelRequest, modelResponse, dtoArgNumber, pathToData);
 }
 
-export function DeleteMapper(modelResponse) {
-    return GetMapper(modelResponse);
+export function DeleteMapper(modelResponse, pathToData = "data") {
+    return GetMapper(modelResponse, pathToData);
 }

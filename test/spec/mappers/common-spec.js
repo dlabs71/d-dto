@@ -20,7 +20,7 @@ import {
 import {JSON_NAME_TMPL} from "../../../src/core/constants";
 import moment from "moment";
 
-xdescribe("mapper tests. Common functions", () => {
+describe("mapper tests. Common functions", () => {
 
     it("findPropertyDescription", () => {
         class BaseModel {

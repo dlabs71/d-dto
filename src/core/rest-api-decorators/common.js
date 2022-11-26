@@ -2,13 +2,30 @@ import {c2jMapperWrapper, j2cMapperWrapper} from "../mappers/index.js";
 import {v5 as uuidV5} from "uuid";
 import {UUID_NAMESPACE} from "../constants.js";
 
-export function convertResponse(modelResponse, originalMethod, args) {
-    let convert = (result) => {
-        if (result.data) {
-            return j2cMapperWrapper(result.data, modelResponse);
-        } else {
-            return j2cMapperWrapper(result, modelResponse);
+export function getDataFromObject(obj, pathToField = null) {
+    if (!pathToField) {
+        return obj;
+    }
+    if (!pathToField.includes(".")) {
+        if (!(pathToField in obj)) {
+            return null;
         }
+        return obj[pathToField];
+    }
+    let data = obj;
+    for (let field of pathToField.split(".")) {
+        if (!data) {
+            return null;
+        }
+        data = data[field];
+    }
+    return data;
+}
+
+export function convertResponse(modelResponse, originalMethod, pathToData, args) {
+    let convert = (result) => {
+        let data = getDataFromObject(result, pathToData);
+        return j2cMapperWrapper(data, modelResponse);
     };
 
     let result = originalMethod.call(this, ...args);

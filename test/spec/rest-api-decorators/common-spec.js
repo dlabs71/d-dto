@@ -2,11 +2,31 @@ import {
     checkSeparateCondition,
     convertArgs,
     convertResponse,
-    createLookupId
+    createLookupId,
+    getDataFromObject
 } from "../../../src/core/rest-api-decorators/common";
 import {JsonField, TypeString} from "../../../src";
 
 describe("rest api decorators. Common functions", () => {
+
+    it("getDataFromObject", () => {
+        let obj = {
+            prop1: "prop1",
+            result: {
+                data: "data",
+                result: {
+                    data: "qwerty"
+                }
+            }
+        };
+
+        expect(getDataFromObject(obj)).toEqual(obj);
+        expect(getDataFromObject(obj, "prop2")).toBeNull();
+        expect(getDataFromObject(obj, "result.prop.result")).toBeNull();
+        expect(getDataFromObject(obj, "prop1")).toEqual("prop1");
+        expect(getDataFromObject(obj, "result.data")).toEqual("data");
+        expect(getDataFromObject(obj, "result.result.data")).toEqual("qwerty");
+    });
 
     it("convertResponse", (done) => {
         let data = {
@@ -43,14 +63,43 @@ describe("rest api decorators. Common functions", () => {
             }
         };
 
-        let response2 = convertResponse(Model, originalMethodStandard, ["arg1", "arg2", "arg3"]);
+        let originalMethodStandard2 = (arg1, arg2, arg3) => {
+            let newData = JSON.parse(JSON.stringify(data));
+            newData.prop1 = arg1;
+            newData.prop2 = arg2;
+            newData.prop3 = arg3;
+            return {
+                result: {
+                    data: newData
+                }
+            }
+        };
+
+        let response2 = convertResponse(
+            Model,
+            originalMethodStandard,
+            "data",
+            ["arg1", "arg2", "arg3"]
+        );
         expect(response2).toBeDefined();
         expect(response2).toBeInstanceOf(Model);
         expect(response2.prop1).toEqual("arg1");
         expect(response2.prop2).toEqual("arg2");
         expect(response2.prop3).toEqual("arg3");
 
-        convertResponse(Model, originalMethodPromise, ["arg1", "arg2", "arg3"])
+        let response3 = convertResponse(
+            Model,
+            originalMethodStandard2,
+            "result.data",
+            ["arg1", "arg2", "arg3"]
+        );
+        expect(response3).toBeDefined();
+        expect(response3).toBeInstanceOf(Model);
+        expect(response3.prop1).toEqual("arg1");
+        expect(response3.prop2).toEqual("arg2");
+        expect(response3.prop3).toEqual("arg3");
+
+        convertResponse(Model, originalMethodPromise, "data", ["arg1", "arg2", "arg3"])
             .then(response => {
                 expect(response).toBeDefined();
                 expect(response).toBeInstanceOf(Model);
