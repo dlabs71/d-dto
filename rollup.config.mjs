@@ -12,15 +12,24 @@ export default [{
     input: 'src/index.js',
     output: [
         {
-            file: 'dist/d-dto.min.js',
-            format: 'iife',
+            file: 'dist/d-dto.umd.min.js',
+            format: 'umd',
+            name: 'd-dto'
+        },
+        {
+            file: 'dist/d-dto.cjs.min.js',
+            format: 'cjs',
+            name: 'd-dto'
+        },
+        {
+            file: 'dist/d-dto.esm.min.js',
+            format: 'esm',
             name: 'd-dto'
         }
     ],
     plugins: [
-        del({ targets: "dist/*" }),
+        del({targets: "dist/*"}),
         nodeResolve(),
-        commonjs(),
         babel({
             babelrc: false,
             exclude: "**/node_modules/**",
@@ -28,10 +37,13 @@ export default [{
                 "@babel/preset-env"
             ],
             plugins: [
-                "@babel/plugin-transform-runtime"
+                ['@babel/plugin-proposal-decorators', {legacy: true}],
+                '@babel/plugin-proposal-class-properties',
+                "@babel/plugin-transform-runtime",
             ],
             babelHelpers: "runtime"
         }),
+        commonjs(),
         terser()
     ],
 }];
