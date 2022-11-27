@@ -1,6 +1,14 @@
-import { PREFIX_PROPERTY_EX } from '../constants.js';
-import { getCastTypeProp, getJsonFieldProp, getProperty } from './common.js';
+import {PREFIX_PROPERTY_EX} from '../constants.js';
+import {getCastTypeProp, getJsonFieldProp, getProperty} from './common.js';
 
+/**
+ * Function for mapping json object to dto class
+ * @param jsonObj - source json object
+ * @param DtoModel - class name for target dto
+ * @param skipNotDefine - returned null, if skip json filed name which is not define in dto class
+ * else threw exception
+ * @returns {DtoModel} DtoModel parameter class instance
+ */
 export function j2cMapper(jsonObj, DtoModel, skipNotDefine = false) {
     const dto = new DtoModel();
 
@@ -26,18 +34,29 @@ export function j2cMapper(jsonObj, DtoModel, skipNotDefine = false) {
     return dto;
 }
 
-export function j2cMapperWrapper(jsonObj, dtoModel, skipNotDefine = false) {
-    if (!dtoModel) {
+/**
+ * Wrapper function for mapping json object to dto class
+ * Set "default" to DtoModel and then the function will return the original json object
+ * If jsonObj is Array, then j2cMapper function will apply to every item of this array
+ *
+ * @param jsonObj - source json object.
+ * @param DtoModel - class name for target dto
+ * @param skipNotDefine - returned null, if skip json filed name which is not define in dto class
+ * else threw exception
+ * @returns {DtoModel} DtoModel parameter class instance
+ */
+export function j2cMapperWrapper(jsonObj, DtoModel, skipNotDefine = false) {
+    if (!DtoModel) {
         throw new Error('Model is required attribute!');
     }
-    if (dtoModel === 'default') {
+    if (DtoModel === 'default') {
         return jsonObj;
     }
     if (!jsonObj) {
         return jsonObj;
     }
     if (Array.isArray(jsonObj)) {
-        return jsonObj.map((item) => j2cMapper(item, dtoModel, skipNotDefine));
+        return jsonObj.map((item) => j2cMapper(item, DtoModel, skipNotDefine));
     }
-    return j2cMapper(jsonObj, dtoModel, skipNotDefine);
+    return j2cMapper(jsonObj, DtoModel, skipNotDefine);
 }

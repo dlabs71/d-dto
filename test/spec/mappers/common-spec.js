@@ -1,5 +1,5 @@
 import {
-    findPropertyDescription,
+    findPropertyDescriptor,
     getCastTypeProp,
     getJsonFieldProp,
     getProperty,
@@ -31,13 +31,13 @@ describe("mapper tests. Common functions", () => {
             @JsonField("data_json") @TypeString data;
         }
 
-        let desc1 = findPropertyDescription(JSON_NAME_TMPL("data"), Model);
+        let desc1 = findPropertyDescriptor(JSON_NAME_TMPL("data"), Model);
         expect(desc1.value).toEqual("data_json");
 
-        let desc2 = findPropertyDescription(JSON_NAME_TMPL("property"), Model);
+        let desc2 = findPropertyDescriptor(JSON_NAME_TMPL("property"), Model);
         expect(desc2.value).toEqual("property_json");
 
-        let desc3 = findPropertyDescription(JSON_NAME_TMPL("www"), Model);
+        let desc3 = findPropertyDescriptor(JSON_NAME_TMPL("www"), Model);
         expect(desc3).toEqual(null);
     });
 

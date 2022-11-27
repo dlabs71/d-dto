@@ -58,7 +58,7 @@
     },
     "homepage": "https://github.com/dlabs71/d-dto#readme",
     "engines": {
-        "node": ">=16.17.0"
+        "node": ">=12.22.12"
     },
     "publishConfig": {
         "access": "public",
