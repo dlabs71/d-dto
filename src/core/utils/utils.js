@@ -1,5 +1,5 @@
 import moment from 'moment';
-import {KNOWN_FORMAT_DATE, KNOWN_FORMAT_DATETIME} from '../constants.js';
+import { KNOWN_FORMAT_DATE, KNOWN_FORMAT_DATETIME } from '../constants.js';
 
 /**
  * Function for converting string to date/datetime (instance of moment library) {@see moment.Moment})

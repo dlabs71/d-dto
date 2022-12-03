@@ -1,4 +1,4 @@
-import {CAST_FN_TMPL, JSON_NAME_TMPL} from '../constants.js';
+import { CAST_FN_TMPL, JSON_NAME_TMPL } from '../constants.js';
 
 /**
  * Function for finding class property descriptor

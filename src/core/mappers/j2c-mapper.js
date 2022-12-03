@@ -1,5 +1,5 @@
-import {PREFIX_PROPERTY_EX} from '../constants.js';
-import {getCastTypeProp, getJsonFieldProp, getProperty} from './common.js';
+import { PREFIX_PROPERTY_EX } from '../constants.js';
+import { getCastTypeProp, getJsonFieldProp, getProperty } from './common.js';
 
 /**
  * Function for mapping json object to dto class

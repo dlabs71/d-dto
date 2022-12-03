@@ -1,6 +1,24 @@
 import { j2cMapperWrapper } from '../mappers/index.js';
 import { checkSeparateCondition, createLookupId, getDataFromObject } from './common.js';
 
+/**
+ * Decorator function for a service function that implements a GET request REST API.
+ * This decorator can cache the result
+ * @param modelResponse - dto class for converting response
+ * @param separateStorageConf - configuration for separate result store
+ * separateStorageConf = {
+ *     argIdx: 1 // index of the argument based on which the lookup will be stored separately
+ *     conditions: { // conditions on arguments to save the lookup
+ *         arg_0: value => !!value,
+ *         arg_1: value => !!value,
+ *         arg_2: value => !!value
+ *     }
+ * }
+ * @param saveToStoreFn - function for saving result to store
+ * @param getFromStoreFn - function for getting result from store
+ * @param pathToData - path to data filed in object response
+ * @returns {function} - decorator function
+ */
 export function StorableGetMapper(
     modelResponse,
     separateStorageConf = null,
@@ -60,6 +78,15 @@ export function StorableGetMapper(
     };
 }
 
+/**
+ * Implement StorableGetMapper for vuex store
+ * @param store - vuex instance
+ * @param modelResponse - dto class for converting response
+ * @param lookupName - name lookup
+ * @param separateStorageConf - configuration for separate result store
+ * @param pathToData - path to data filed in object response
+ * @returns {function} - decorator function
+ */
 export function VuexGetMapper(
     store,
     modelResponse,

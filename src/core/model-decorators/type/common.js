@@ -5,6 +5,14 @@ import {
 import { DATA_TYPE, DEFAULT_FORMAT_DATE, DEFAULT_FORMAT_DATETIME } from '../../constants.js';
 import { c2jMapperWrapper, j2cMapperWrapper } from '../../mappers/index.js';
 
+/**
+ * Function for type cast simple type: string, number, boolean, custom YES/NO type, object
+ * @param value - data for cast to type from "type" parameter
+ * @param type - type for cast {@see DATA_TYPE}
+ * @param revert - if false then standard value conversion occurs otherwise reverse cast
+ * for json format occurs if required
+ * @returns {*} converted value
+ */
 export function castSimpleType(value, type, revert = false) {
     if (value === null || value === undefined) {
         return value;
@@ -52,6 +60,14 @@ export function castSimpleType(value, type, revert = false) {
     throw new Error(`Type ${type} is not supported`);
 }
 
+/**
+ * Function for cast date and datetime type
+ * @param value - data for cast to type from "type" parameter
+ * @param type - type for cast {@see DATA_TYPE.DATE} {@see DATA_TYPE.DATE_TIME}
+ * @param format - string format date/datetime. The format is used from the moment library
+ * @returns {moment.Moment|null} date value
+ * @private
+ */
 function _castDateType(value, type, format = null) {
     if (value === null || value === undefined) {
         return value;
@@ -75,6 +91,14 @@ function _castDateType(value, type, format = null) {
     return null;
 }
 
+/**
+ * Function for cast date and datetime type for json format
+ * @param value - data for cast to type from "type" parameter
+ * @param type - type for cast {@see DATA_TYPE.DATE} {@see DATA_TYPE.DATE_TIME}
+ * @param format - string format date/datetime. The format is used from the moment library
+ * @returns {string|null} string date value
+ * @private
+ */
 function _castDateTypeRevert(value, type, format = null) {
     if (value === null || value === undefined) {
         return null;
@@ -96,6 +120,15 @@ function _castDateTypeRevert(value, type, format = null) {
     return null;
 }
 
+/**
+ * Function for cast date and datetime type {@see _castDateType}, {@see _castDateTypeRevert}
+ * @param value - data for cast to type from "type" parameter
+ * @param type - type for cast {@see DATA_TYPE.DATE} {@see DATA_TYPE.DATE_TIME}
+ * @param format - string format date/datetime. The format is used from the moment library
+ * @param revert - if true use _castDateTypeRevert function {@see _castDateTypeRevert}
+ * else _castDateType function {@see _castDateType}
+ * @returns {moment.Moment|string|null} converted value
+ */
 export function castDateType(value, type, format = null, revert = false) {
     if (revert) {
         return _castDateTypeRevert(value, type, format);
@@ -103,10 +136,20 @@ export function castDateType(value, type, format = null, revert = false) {
     return _castDateType(value, type, format);
 }
 
+/**
+ * Function for convert json to dto class instance or vice versa
+ * @param value - data for convert (json or dto class instance)
+ * @param CustomClass - dto class for convert from json
+ * @param revert - if false then value must to be json else value must to be dto class instance
+ * @returns {CustomClass|object}
+ * if revert parameter is false then function return dto class instance
+ * if revert parameter is true then function return JS object (JSON)
+ */
 export function castCustomType(value, CustomClass, revert = false) {
-    if (!value && !revert) {
-        return j2cMapperWrapper(new CustomClass(), CustomClass);
-    }
+    // todo deprecated approach
+    // if (!value && !revert) {
+    //     return j2cMapperWrapper(new CustomClass(), CustomClass);
+    // }
 
     if (revert) {
         return c2jMapperWrapper(value);
@@ -114,6 +157,17 @@ export function castCustomType(value, CustomClass, revert = false) {
     return j2cMapperWrapper(value, CustomClass);
 }
 
+/**
+ * Universal function for cast any type value.
+ * Function union next functions: {@see castSimpleType}, {@see castDateType}, {@see castCustomType}
+ * @param value - data for convert
+ * @param type - type for cast {@see DATA_TYPE}
+ * @param customClass - dto class for convert from json
+ * @param format - string format date/datetime. The format is used from the moment library
+ * @param revert - if false then standard value conversion occurs otherwise reverse cast
+ * for json format occurs if required
+ * @returns {*} - data value after converting
+ */
 export function castType(value, type, customClass, format = null, revert = false) {
     if (type == null) {
         throw new Error('Type for cast is null');
