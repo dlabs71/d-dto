@@ -1,5 +1,6 @@
-import { j2cMapperWrapper } from '../mappers/index.js';
-import { checkSeparateCondition, createLookupId, getDataFromObject } from './common.js';
+import {j2cMapperWrapper} from '../mappers/index.js';
+import {checkSeparateCondition, createLookupId, getDataFromObject} from './common.js';
+import {SERVICE_CACHE_ACTIONS, SERVICE_CACHE_GETTERS} from "./store/service-cache-module";
 
 /**
  * Decorator function for a service function that implements a GET request REST API.
@@ -97,11 +98,11 @@ export function VuexGetMapper(
     return StorableGetMapper(
         modelResponse,
         separateStorageConf,
-        (data) => store.dispatch('setLookup', {
+        (data) => store.dispatch(SERVICE_CACHE_ACTIONS.saveLookup, {
             name: lookupName,
             data,
         }),
-        () => store.getters.getLookup(lookupName),
+        () => store.getters[SERVICE_CACHE_GETTERS.getLookup](lookupName),
         pathToData,
     );
 }
