@@ -1,4 +1,6 @@
-import {c2jMapper, c2jMapperWrapper, j2cMapper, j2cMapperWrapper,} from './core/mappers/index.js';
+import {
+    c2jMapper, c2jMapperWrapper, j2cMapper, j2cMapperWrapper,
+} from './core/mappers/index.js';
 import {
     JsonField,
     TypeArr,
@@ -19,11 +21,11 @@ import {
     StorableGetMapper,
     VuexGetMapper,
 } from './core/rest-api-decorators/index.js';
-import {BusinessDto, ModelExtension} from './models/common-models.js';
-import {DATA_TYPE} from './core/constants';
+import { BusinessDto, ModelExtension } from './models/common-models.js';
+import { DATA_TYPE } from './core/constants';
 import serviceCacheModule, {
     SERVICE_CACHE_ACTIONS,
-    SERVICE_CACHE_GETTERS
+    SERVICE_CACHE_GETTERS,
 } from './core/rest-api-decorators/store/service-cache-module';
 
 export {
@@ -56,5 +58,5 @@ export {
     DATA_TYPE,
     serviceCacheModule,
     SERVICE_CACHE_ACTIONS,
-    SERVICE_CACHE_GETTERS
+    SERVICE_CACHE_GETTERS,
 };

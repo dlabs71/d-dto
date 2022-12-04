@@ -482,8 +482,8 @@ class Dto {
 
 | **Функция**                              | **Описание**                                                            |
 | :----------------------------------------| :-----------------------------------------------------------------------|
-| beforeJ2cMapping(jsonObj, DtoModelClass) | Функция будет выполнена до процесса конвертации из JSON в DTO-модель    |
-| afterJ2cMapping(jsonObj, DtoModelClass)  | Функция будет выполнена после процесса конвертации из JSON в DTO-модель |
+| beforeJ2cMapping(jsonObj, dto)           | Функция будет выполнена до процесса конвертации из JSON в DTO-модель    |
+| afterJ2cMapping(jsonObj, dto)            | Функция будет выполнена после процесса конвертации из JSON в DTO-модель |
 | beforeC2jMapping(dto, resultJsonObj)     | Функция будет выполнена до процесса конвертации из DTO-модели в JSON    |
 | afterC2jMapping(dto, resultJsonObj)      | Функция будет выполнена после процесса конвертации из DTO-модели в JSON |
 

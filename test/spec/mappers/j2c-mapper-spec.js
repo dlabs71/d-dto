@@ -160,11 +160,11 @@ describe("J2C: json to dto class", () => {
             @JsonField("second_name") @TypeString secondName;
             @JsonField("age") @TypeNumber age;
 
-            beforeJ2cMapping(jsonObj, dtoModel) {
+            beforeJ2cMapping(jsonObj, dto) {
                 this.beforeJ2c = jsonObj["first_name"];
             }
 
-            afterJ2cMapping(jsonObj, dtoModel) {
+            afterJ2cMapping(jsonObj, dto) {
                 this.afterJ2c = jsonObj["second_name"];
             }
         }

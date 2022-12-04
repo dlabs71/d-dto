@@ -13,7 +13,7 @@ export function j2cMapper(jsonObj, DtoModel, skipNotDefine = false) {
     const dto = new DtoModel();
 
     if (dto.beforeJ2cMapping) {
-        dto.beforeJ2cMapping(jsonObj, DtoModel);
+        dto.beforeJ2cMapping(jsonObj, dto);
     }
 
     Object.keys(dto)
@@ -29,7 +29,7 @@ export function j2cMapper(jsonObj, DtoModel, skipNotDefine = false) {
         });
 
     if (dto.afterJ2cMapping) {
-        dto.afterJ2cMapping(jsonObj, DtoModel);
+        dto.afterJ2cMapping(jsonObj, dto);
     }
     return dto;
 }

@@ -1,6 +1,6 @@
-import {j2cMapperWrapper} from '../mappers/index.js';
-import {checkSeparateCondition, createLookupId, getDataFromObject} from './common.js';
-import {SERVICE_CACHE_ACTIONS, SERVICE_CACHE_GETTERS} from "./store/service-cache-module";
+import { j2cMapperWrapper } from '../mappers/index.js';
+import { checkSeparateCondition, createLookupId, getDataFromObject } from './common.js';
+import { SERVICE_CACHE_ACTIONS, SERVICE_CACHE_GETTERS } from './store/service-cache-module';
 
 /**
  * Decorator function for a service function that implements a GET request REST API.

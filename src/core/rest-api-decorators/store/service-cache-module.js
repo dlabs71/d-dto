@@ -1,28 +1,28 @@
 const state = {
-    lookups: []
+    lookups: [],
 };
 
 const getters = {
-    getLookup: (state) => lookupName => state.lookups[lookupName]
+    getLookup: (st) => (lookupName) => st.lookups[lookupName],
 };
 
 const mutations = {
-    SAVE_LOOKUP: (state, data) => {
-        state.lookups[data.name] = data.data;
-    }
+    SAVE_LOOKUP: (st, data) => {
+        st.lookups[data.name] = data.data;
+    },
 };
 
 const actions = {
-    saveLookup({commit}, data) {
+    saveLookup({ commit }, data) {
         commit('SAVE_LOOKUP', data);
-    }
+    },
 };
 
 export const SERVICE_CACHE_ACTIONS = {
-    saveLookup: "serviceCache/saveLookup",
+    saveLookup: 'serviceCache/saveLookup',
 };
 export const SERVICE_CACHE_GETTERS = {
-    getLookup: "serviceCache/getLookup"
+    getLookup: 'serviceCache/getLookup',
 };
 
 export default {
