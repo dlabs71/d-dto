@@ -51,7 +51,9 @@
         "jsdto",
         "jsmodels",
         "models",
-        "dtomodels"
+        "dtomodels",
+        "rest",
+        "json"
     ],
     "bugs": {
         "url": "https://github.com/dlabs71/d-dto/issues"

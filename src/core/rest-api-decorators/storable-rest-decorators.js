@@ -18,6 +18,7 @@ import { SERVICE_CACHE_ACTIONS, SERVICE_CACHE_GETTERS } from './store/service-ca
  * @param saveToStoreFn - function for saving result to store
  * @param getFromStoreFn - function for getting result from store
  * @param pathToData - path to data filed in object response
+ * @param strict - if true all fields from JSON must match class fields
  * @returns {function} - decorator function
  */
 export function StorableGetMapper(
@@ -29,6 +30,7 @@ export function StorableGetMapper(
     getFromStoreFn = () => {
     },
     pathToData = 'data',
+    strict = false,
 ) {
     return (target, property, descriptor) => {
         const originalMethod = descriptor.value;
@@ -39,7 +41,7 @@ export function StorableGetMapper(
                 if (!argSeparateValue) {
                     return originalMethod.call(this, ...args).then((result) => {
                         const data = getDataFromObject(result, pathToData);
-                        return j2cMapperWrapper(data, modelResponse);
+                        return j2cMapperWrapper(data, modelResponse, !strict);
                     });
                 }
                 // for separated by argument value lookup
@@ -47,7 +49,7 @@ export function StorableGetMapper(
                 let storedLookup = getFromStoreFn();
                 if (!!storedLookup && !!storedLookup[lookupId]) {
                     return new Promise((resolve) => {
-                        resolve(j2cMapperWrapper(storedLookup[lookupId], modelResponse));
+                        resolve(j2cMapperWrapper(storedLookup[lookupId], modelResponse, !strict));
                     });
                 }
                 return originalMethod.call(this, ...args).then((result) => {
@@ -58,7 +60,7 @@ export function StorableGetMapper(
 
                     storedLookup[lookupId] = data;
                     saveToStoreFn(storedLookup);
-                    return j2cMapperWrapper(data, modelResponse);
+                    return j2cMapperWrapper(data, modelResponse, !strict);
                 });
             }
 
@@ -66,13 +68,13 @@ export function StorableGetMapper(
             const storedLookup = getFromStoreFn();
             if (storedLookup) {
                 return new Promise((resolve) => {
-                    resolve(j2cMapperWrapper(storedLookup, modelResponse));
+                    resolve(j2cMapperWrapper(storedLookup, modelResponse, !strict));
                 });
             }
             return originalMethod.call(this, ...args).then((result) => {
                 const data = getDataFromObject(result, pathToData);
                 saveToStoreFn(data);
-                return j2cMapperWrapper(data, modelResponse);
+                return j2cMapperWrapper(data, modelResponse, !strict);
             });
         };
         return descriptor;
@@ -86,6 +88,7 @@ export function StorableGetMapper(
  * @param lookupName - name lookup
  * @param separateStorageConf - configuration for separate result store
  * @param pathToData - path to data filed in object response
+ * @param strict - if true all fields from JSON must match class fields
  * @returns {function} - decorator function
  */
 export function VuexGetMapper(
@@ -94,6 +97,7 @@ export function VuexGetMapper(
     lookupName,
     separateStorageConf = null,
     pathToData = 'data',
+    strict = false,
 ) {
     return StorableGetMapper(
         modelResponse,
@@ -104,5 +108,6 @@ export function VuexGetMapper(
         }),
         () => store.getters[SERVICE_CACHE_GETTERS.getLookup](lookupName),
         pathToData,
+        strict,
     );
 }

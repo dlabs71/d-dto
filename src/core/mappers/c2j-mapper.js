@@ -8,7 +8,7 @@ import { getJsonFieldProp, getPropertyFromDto } from './common.js';
  * JsonField decorators (@JsonFiled), else threw exception
  * @returns {object} json object created from dto
  */
-export function c2jMapper(dtoModel, skipIfNotDefine = false) {
+export function c2jMapper(dtoModel, skipIfNotDefine = true) {
     const resultJsonObj = {};
 
     if (dtoModel.beforeC2jMapping) {
@@ -44,7 +44,7 @@ export function c2jMapper(dtoModel, skipIfNotDefine = false) {
  * JsonField decorators (@JsonFiled), else threw exception
  * @returns {object} json object created from dto
  */
-export function c2jMapperWrapper(dtoModel, skipIfNotDefine = false) {
+export function c2jMapperWrapper(dtoModel, skipIfNotDefine = true) {
     if (!dtoModel) {
         return dtoModel;
     }

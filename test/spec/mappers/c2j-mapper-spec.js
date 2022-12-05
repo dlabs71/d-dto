@@ -101,7 +101,7 @@ describe("C2J: dto class to json", () => {
         expect(jsonArr[1]).toEqual({first_name: "Alex", second_name: "Ivanov", age: 52});
 
         personDto.addedField = "addedField";
-        expect(() => c2jMapperWrapper(personDto)).toThrow(jasmine.any(Error));
+        expect(() => c2jMapperWrapper(personDto, false)).toThrow(jasmine.any(Error));
         expect(c2jMapperWrapper(personDto, true)).toEqual({
             first_name: "Danila",
             second_name: "Ivanov",
@@ -110,12 +110,6 @@ describe("C2J: dto class to json", () => {
     });
 
     it("after and before hooks", () => {
-        let sourceJson = {
-            first_name: "Danila",
-            second_name: "Ivanov",
-            age: 24
-        };
-
         class Model {
             @JsonField("first_name") @TypeString firstName;
             @JsonField("second_name") @TypeString secondName;
@@ -139,7 +133,7 @@ describe("C2J: dto class to json", () => {
         }
 
         let dto = Model.createInstance("Danila", "Ivanov", 24);
-        let json = c2jMapperWrapper(dto, true);
+        let json = c2jMapperWrapper(dto);
         expect(json).toBeInstanceOf(Object);
         expect(json.beforeC2j).toEqual("beforeC2j");
         expect(json.afterC2j).toEqual("afterC2j");

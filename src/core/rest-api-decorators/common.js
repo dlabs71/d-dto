@@ -46,13 +46,14 @@ export function getDataFromObject(obj, pathToField = null) {
  * @param originalMethod - original function
  * @param pathToData - path to json object in response from original function
  * @param args - arguments array for original function
+ * @param strict - if true all fields from JSON must match class fields
  * @returns {Promise<DtoModel>|DtoModel} - promise or simple dto class instance.
  * If original function return Promise instance that result will be a Promise with converted value
  */
-export function convertResponse(modelResponse, originalMethod, pathToData, args) {
+export function convertResponse(modelResponse, originalMethod, pathToData, args, strict = false) {
     const convert = (result) => {
         const data = getDataFromObject(result, pathToData);
-        return j2cMapperWrapper(data, modelResponse);
+        return j2cMapperWrapper(data, modelResponse, !strict);
     };
 
     const result = originalMethod.call(this, ...args);
@@ -67,11 +68,12 @@ export function convertResponse(modelResponse, originalMethod, pathToData, args)
  * Function to convert a single element in an array from an instance of the dto class to a simple JS object
  * @param args - array
  * @param dtoArgNumber - index item in array
+ * @param strict - if true all fields from DTO must have @JsonField decorator
  * @returns {Array} - array with converting an item
  */
-export function convertArgs(args, dtoArgNumber) {
+export function convertArgs(args, dtoArgNumber, strict = false) {
     const dtoArg = args[dtoArgNumber];
-    const json = c2jMapperWrapper(dtoArg);
+    const json = c2jMapperWrapper(dtoArg, !strict);
     const newArgs = Array.from(args);
     newArgs[dtoArgNumber] = json;
     return newArgs;

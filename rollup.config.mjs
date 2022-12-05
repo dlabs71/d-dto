@@ -5,10 +5,6 @@ import {nodeResolve} from '@rollup/plugin-node-resolve';
 import del from "rollup-plugin-delete";
 
 export default [{
-    external: [
-        'fs',
-        'path'
-    ],
     input: 'src/index.js',
     output: [
         {

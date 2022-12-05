@@ -509,7 +509,7 @@ dto.firstName = "Danila";
 dto.secondName = "Ivanov";
 dto.age = 24;
 
-let json = c2jMapperWrapper(dto, true);
+let json = c2jMapperWrapper(dto);
 
 /*
     json = {
@@ -545,7 +545,7 @@ class Model {
     }
 }
 
-let dto = j2cMapperWrapper(sourceJson, Model, true);
+let dto = j2cMapperWrapper(sourceJson, Model);
 
 /*
     dto = Model {
@@ -570,6 +570,8 @@ let dto = j2cMapperWrapper(sourceJson, Model, true);
 
 - modelResponse - класс DTO-модели описывающий тело ответа
 - pathToData - путь до поля с данными ответа в JSON-е. По умолчанию = data.
+- strict - если true то включается строгий режим конвертации (по умолчанию false). Т.е. все поля класса должны быть
+  помечены декоратором @JsonField
 
 Если функция возвращает `Promise`, то при применении декоратора он конвертирует ответ, который будет в `.then()`
 и передаст его дальше по цепочке.
@@ -719,6 +721,8 @@ deleteArticleById(1).then(article => {
 - modelResponse - класс DTO-модели описывающий тело ответа. По умолчанию он будет равен modelRequest
 - dtoArgNumber - индекс параметра функции в котором передается DTO для отправки в теле запроса. По умолчанию = 0.
 - pathToData - путь до поля с данными ответа в JSON-е. По умолчанию = data
+- strict - если true то включается строгий режим конвертации (по умолчанию false). Т.е. все поля класса должны быть
+  помечены декоратором @JsonField
 
 По обработке ответа данные декораторы работают
 аналогично [@GetMapper и @DeleteMapper](#2.1_Декораторы_@GetMapper_и_@DeleteMapper).
@@ -913,6 +917,8 @@ updateArticle(articleDto).then(article => {
 - saveToStoreFn - функция для сохранения данных в кэш. Принимает один аргумент — данные, которые нужно сохранить
 - getFromStoreFn - функция получения данных из кэша.
 - pathToData - путь до поля с данными ответа в JSON-е. По умолчанию = data
+- strict - если true то включается строгий режим конвертации (по умолчанию false). Т.е. все поля класса должны быть
+  помечены декоратором @JsonField
 
 **`cache.js`**
 
@@ -1112,6 +1118,8 @@ getArticleKinds(2, 1).then(result => {
 - separateStorageConf - конфигурация раздельного хранения данных на основе параметров функции. Пример смотрите в пункте
   про [@StorableGetMapper](#2.3.1_Декоратор_@StorableGetMapper)
 - pathToData - путь до поля с данными ответа в JSON-е. По умолчанию = data
+- strict - если true то включается строгий режим конвертации (по умолчанию false). Т.е. все поля класса должны быть
+  помечены декоратором @JsonField
 
 Также библиотека предоставляет готовый модуль Vuex хранилища для хранения данных.
 **`store.js`**

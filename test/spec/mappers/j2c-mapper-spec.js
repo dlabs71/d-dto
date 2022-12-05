@@ -144,7 +144,7 @@ describe("J2C: json to dto class", () => {
             addedField = "addedField";
         }
 
-        expect(() => j2cMapperWrapper(sourceJson, Model)).toThrow(jasmine.any(Error));
+        expect(() => j2cMapperWrapper(sourceJson, Model, false)).toThrow(jasmine.any(Error));
         expect(j2cMapperWrapper(sourceJson, Model, true).addedField).toEqual("addedField");
     });
 
@@ -169,7 +169,7 @@ describe("J2C: json to dto class", () => {
             }
         }
 
-        let dto = j2cMapperWrapper(sourceJson, Model, true);
+        let dto = j2cMapperWrapper(sourceJson, Model);
         expect(dto).toBeInstanceOf(Model);
         expect(dto.beforeJ2c).toEqual("Danila");
         expect(dto.afterJ2c).toEqual("Ivanov");

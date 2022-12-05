@@ -9,7 +9,7 @@ import { getCastTypeProp, getJsonFieldProp, getProperty } from './common.js';
  * else threw exception
  * @returns {DtoModel} DtoModel parameter class instance
  */
-export function j2cMapper(jsonObj, DtoModel, skipNotDefine = false) {
+export function j2cMapper(jsonObj, DtoModel, skipNotDefine = true) {
     const dto = new DtoModel();
 
     if (dto.beforeJ2cMapping) {
@@ -45,7 +45,7 @@ export function j2cMapper(jsonObj, DtoModel, skipNotDefine = false) {
  * else threw exception
  * @returns {DtoModel} DtoModel parameter class instance
  */
-export function j2cMapperWrapper(jsonObj, DtoModel, skipNotDefine = false) {
+export function j2cMapperWrapper(jsonObj, DtoModel, skipNotDefine = true) {
     if (!DtoModel) {
         throw new Error('Model is required attribute!');
     }
