@@ -76,11 +76,12 @@ export function TypeYesNo(target, name, description) {
 /**
  * Decorator for a class field that means the type value must be a date
  * @param format - string format date. The format is used from the moment library
+ * @param l10n - date localization (en, ru, ...)
  * @returns {function} - decorator function
  */
-export function TypeDate(format = null) {
+export function TypeDate(format = null, l10n = 'en') {
     return (target, name, description) => {
-        const castType = (value, revert = false) => castDateType(value, DATA_TYPE.DATE, format, revert);
+        const castType = (value, revert = false) => castDateType(value, DATA_TYPE.DATE, format, l10n, revert);
         Object.defineProperty(target, CAST_FN_TMPL(name), {
             enumerable: false,
             configurable: false,
@@ -94,11 +95,18 @@ export function TypeDate(format = null) {
 /**
  * Decorator for a class field that means the type value must be a datetime
  * @param format - string format datetime. The format is used from the moment library
+ * @param l10n - date localization (en, ru, ...)
  * @returns {function} - decorator function
  */
-export function TypeDateTime(format = null) {
+export function TypeDateTime(format = null, l10n = 'en') {
     return (target, name, description) => {
-        const castType = (value, revert = false) => castDateType(value, DATA_TYPE.DATE_TIME, format, revert);
+        const castType = (value, revert = false) => castDateType(
+            value,
+            DATA_TYPE.DATE_TIME,
+            format,
+            l10n,
+            revert,
+        );
         Object.defineProperty(target, CAST_FN_TMPL(name), {
             enumerable: false,
             configurable: false,

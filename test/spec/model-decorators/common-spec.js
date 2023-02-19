@@ -107,9 +107,10 @@ describe("model decorator tests. Common functions", () => {
     });
 
     it("castDateType with type DATE", () => {
-        let castWrapper = (value, format = null) => {
-            return castDateType(value, DATA_TYPE.DATE, format)
+        let castWrapper = (value, format = null, l10n = null) => {
+            return castDateType(value, DATA_TYPE.DATE, format, l10n)
         };
+
         expect(castWrapper("qwerty")).toEqual(null);
         expect(castWrapper(123)).toEqual(null);
         expect(castWrapper(true)).toEqual(null);
@@ -120,6 +121,14 @@ describe("model decorator tests. Common functions", () => {
             .toEqual("2022-01-22");
         expect(castWrapper("1.1.22", "D.M.YY").format("YYYY-MM-DD"))
             .toEqual("2022-01-01");
+
+        // testing date localization
+        expect(castWrapper("19 февраля 2023", "DD MMMM YYYY", "ru").format("YYYY-MM-DD"))
+            .toEqual("2023-02-19");
+        expect(castWrapper("19 février 2023", "DD MMMM YYYY", "fr").format("YYYY-MM-DD"))
+            .toEqual("2023-02-19");
+        expect(castWrapper("19 februar 2023", "DD MMMM YYYY", "de").format("YYYY-MM-DD"))
+            .toEqual("2023-02-19");
 
         expect(castWrapper(moment("2022-01-01")).format("YYYY-MM-DD"))
             .toEqual("2022-01-01");
@@ -132,8 +141,8 @@ describe("model decorator tests. Common functions", () => {
     });
 
     it("castDateType with type DATETIME", () => {
-        let castWrapper = (value, format = null) => {
-            return castDateType(value, DATA_TYPE.DATE_TIME, format)
+        let castWrapper = (value, format = null, l10n = null) => {
+            return castDateType(value, DATA_TYPE.DATE_TIME, format, l10n)
         };
         expect(castWrapper("qwerty")).toEqual(null);
         expect(castWrapper(123)).toEqual(null);
@@ -145,6 +154,17 @@ describe("model decorator tests. Common functions", () => {
             .toEqual("2022-01-20T20:01:22+03:00");
         expect(castWrapper("22.1.1T20/01/22", "YY.M.DTHH/mm/ss").format())
             .toEqual("2022-01-01T20:01:22+03:00");
+
+        // testing date localization
+        expect(castWrapper("19 февраля 2023 20:01", "DD MMMM YYYY HH:mm", "ru")
+            .format("YYYY-MM-DDTHH:mm"))
+            .toEqual("2023-02-19T20:01");
+        expect(castWrapper("19 février 2023 20:01", "DD MMMM YYYY HH:mm", "fr")
+            .format("YYYY-MM-DDTHH:mm"))
+            .toEqual("2023-02-19T20:01");
+        expect(castWrapper("19 februar 2023 20:01", "DD MMMM YYYY HH:mm", "de")
+            .format("YYYY-MM-DDTHH:mm"))
+            .toEqual("2023-02-19T20:01");
 
         expect(castWrapper(moment("2022-01-01T20:01:02")).format("YYYY-MM-DDTHH:mm:ss"))
             .toEqual("2022-01-01T20:01:02");

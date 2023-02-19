@@ -65,28 +65,29 @@ export function castSimpleType(value, type, revert = false) {
  * @param value - data for cast to type from "type" parameter
  * @param type - type for cast {@see DATA_TYPE.DATE} {@see DATA_TYPE.DATE_TIME}
  * @param format - string format date/datetime. The format is used from the moment library
+ * @param l10n - date localization (en, ru, ...)
  * @returns {moment.Moment|null} date value
  * @private
  */
-function _castDateType(value, type, format = null) {
+function _castDateType(value, type, format = null, l10n = 'en') {
     if (value === null || value === undefined) {
         return value;
     }
-    if (!isDate(value, format)) {
+    if (!isDate(value, format, l10n)) {
         return null;
     }
     if (type === DATA_TYPE.DATE) {
         if (typeof value === 'string') {
-            return str2Date(value, format);
+            return str2Date(value, format, l10n);
         }
         return moment(value);
     }
 
     if (type === DATA_TYPE.DATE_TIME) {
         if (typeof value === 'string') {
-            return str2DateTime(value, format);
+            return str2DateTime(value, format, l10n);
         }
-        return str2DateTime(formatDateTime(value), format);
+        return str2DateTime(formatDateTime(value), format, l10n);
     }
     return null;
 }
@@ -96,14 +97,15 @@ function _castDateType(value, type, format = null) {
  * @param value - data for cast to type from "type" parameter
  * @param type - type for cast {@see DATA_TYPE.DATE} {@see DATA_TYPE.DATE_TIME}
  * @param format - string format date/datetime. The format is used from the moment library
+ * @param l10n - date localization (en, ru, ...)
  * @returns {string|null} string date value
  * @private
  */
-function _castDateTypeRevert(value, type, format = null) {
+function _castDateTypeRevert(value, type, format = null, l10n = 'en') {
     if (value === null || value === undefined) {
         return null;
     }
-    if (!isDate(value, format)) {
+    if (!isDate(value, format, l10n)) {
         return null;
     }
     if (typeof value === 'string') {
@@ -111,11 +113,11 @@ function _castDateTypeRevert(value, type, format = null) {
     }
 
     if (type === DATA_TYPE.DATE) {
-        return moment(value).format(format || DEFAULT_FORMAT_DATE);
+        return moment(value).locale(l10n).format(format || DEFAULT_FORMAT_DATE);
     }
 
     if (type === DATA_TYPE.DATE_TIME) {
-        return moment(value).format(format || DEFAULT_FORMAT_DATETIME);
+        return moment(value).locale(l10n).format(format || DEFAULT_FORMAT_DATETIME);
     }
     return null;
 }
@@ -126,14 +128,15 @@ function _castDateTypeRevert(value, type, format = null) {
  * @param type - type for cast {@see DATA_TYPE.DATE} {@see DATA_TYPE.DATE_TIME}
  * @param format - string format date/datetime. The format is used from the moment library
  * @param revert - if true use _castDateTypeRevert function {@see _castDateTypeRevert}
+ * @param l10n - date localization (en, ru, ...)
  * else _castDateType function {@see _castDateType}
  * @returns {moment.Moment|string|null} converted value
  */
-export function castDateType(value, type, format = null, revert = false) {
+export function castDateType(value, type, format = null, l10n = 'en', revert = false) {
     if (revert) {
-        return _castDateTypeRevert(value, type, format);
+        return _castDateTypeRevert(value, type, format, l10n);
     }
-    return _castDateType(value, type, format);
+    return _castDateType(value, type, format, l10n);
 }
 
 /**
@@ -165,10 +168,11 @@ export function castCustomType(value, CustomClass, revert = false) {
  * @param customClass - dto class for convert from json
  * @param format - string format date/datetime. The format is used from the moment library
  * @param revert - if false then standard value conversion occurs otherwise reverse cast
+ * @param l10n - date localization (en, ru, ...)
  * for json format occurs if required
  * @returns {*} - data value after converting
  */
-export function castType(value, type, customClass, format = null, revert = false) {
+export function castType(value, type, customClass, format = null, revert = false, l10n = 'en') {
     if (type == null) {
         throw new Error('Type for cast is null');
     }
@@ -176,7 +180,7 @@ export function castType(value, type, customClass, format = null, revert = false
         return castCustomType(value, customClass, revert);
     }
     if ([DATA_TYPE.DATE, DATA_TYPE.DATE_TIME].includes(type)) {
-        return castDateType(value, type, format, revert);
+        return castDateType(value, type, format, l10n, revert);
     }
 
     return castSimpleType(value, type, revert);
