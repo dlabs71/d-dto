@@ -24,8 +24,10 @@ describe("J2C: json to dto class", () => {
         prop_yes_no: "N",
         prop_date: "2022-01-01",
         prop_date_2: "01.01.2022",
+        prop_date_3: "01 января 2022",
         prop_datetime: "2022-01-01T22:02:12",
         prop_datetime_2: "01.01.2022 22:01:23",
+        prop_datetime_3: "01 января 2022 22:01:23",
         prop_json: {
             data: "qwert",
             result: "result",
@@ -57,8 +59,10 @@ describe("J2C: json to dto class", () => {
         @JsonField("prop_yes_no") @TypeYesNo propYesNo;
         @JsonField("prop_date") @TypeDate() propDate;
         @JsonField("prop_date_2") @TypeDate() propDate2;
+        @JsonField("prop_date_3") @TypeDate("DD MMMM YYYY", "ru") propDate3;
         @JsonField("prop_datetime") @TypeDateTime() propDatetime;
         @JsonField("prop_datetime_2") @TypeDateTime() propDatetime2;
+        @JsonField("prop_datetime_3") @TypeDateTime("DD MMMM YYYY HH:mm:ss", "ru") propDatetime3;
         @JsonField("prop_json") @TypeJsonObj propJson;
         @JsonField("prop_custom") @TypeCustom(PersonDto) propCustom;
         @JsonField("prop_arr") @TypeArr(DATA_TYPE.STRING) propArr;
@@ -80,11 +84,17 @@ describe("J2C: json to dto class", () => {
         expect(moment.isMoment(dto.propDate2)).toEqual(true);
         expect(dto.propDate2.format("D/M/YY")).toEqual("1/1/22");
 
+        expect(moment.isMoment(dto.propDate3)).toEqual(true);
+        expect(dto.propDate3.format("D/M/YY")).toEqual("1/1/22");
+
         expect(moment.isMoment(dto.propDatetime)).toEqual(true);
         expect(dto.propDatetime.format("D/M/YY H:m:s")).toEqual("1/1/22 22:2:12");
 
         expect(moment.isMoment(dto.propDatetime2)).toEqual(true);
         expect(dto.propDatetime2.format("D/M/YY H:m:s")).toEqual("1/1/22 22:1:23");
+
+        expect(moment.isMoment(dto.propDatetime3)).toEqual(true);
+        expect(dto.propDatetime3.format("D/M/YY H:m:s")).toEqual("1/1/22 22:1:23");
 
         expect(dto.propJson).toEqual({
             data: "qwert",

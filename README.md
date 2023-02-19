@@ -298,8 +298,13 @@ class Dto {
 @TypeDate() - предназначен для преобразования из строки в дату (экземпляр класса moment.Moment). Смотрите документацию
 по [moment](https://momentjs.com/).
 
-Данный декоратор имеет параметр: **`format`** - формат даты. Форматы смотрите
-в [документации к библиотеки moment](https://momentjs.com/docs/#/parsing/string/)
+Данный декоратор имеет два параметра:
+
+- **`format`** - формат даты.
+- **`l10n`** - локализация даты.
+
+Форматы смотрите в [документации к библиотеки moment](https://momentjs.com/docs/#/parsing/string/)
+Варианты локализации также смотрите в [документации к библиотеки moment](https://momentjs.com/docs/#/i18n/)
 
 ```js
 import {JsonField, TypeDate} from '@dlabs71/d-dto';
@@ -307,11 +312,14 @@ import {JsonField, TypeDate} from '@dlabs71/d-dto';
 class Dto {
     @JsonField("value") @TypeDate() value;
     @JsonField("value1") @TypeDate("YYYY-MM-DD") value1;
+
+    // сможет распознать следующий вид даты: 1 января 2022
+    @JsonField("value2") @TypeDate("DD MMMM YYYY", "ru") value2;
 }
 ```
 
-| **Значение JSON**         | **Значение DTO**           |
-| :---------------------------------- | :----------------------------------- |
+| **Значение JSON**                 | **Значение DTO**                   |
+| :---------------------------------| :----------------------------------|
 | "value"                           | null                               |
 | 123                               | null                               |
 | true                              | null                               |
@@ -335,8 +343,13 @@ class Dto {
 @TypeDateTime() - предназначен для преобразования из строки в дату со временем (экземпляр класса moment.Moment).
 Смотрите документацию по [moment](https://momentjs.com/).
 
-Данный декоратор имеет параметр: **`format`** - формат даты. Форматы смотрите
-в [документации к библиотеки moment](https://momentjs.com/docs/#/parsing/string/)
+Данный декоратор имеет два параметра:
+
+- **`format`** - формат даты.
+- **`l10n`** - локализация даты.
+
+Форматы смотрите в [документации к библиотеки moment](https://momentjs.com/docs/#/parsing/string/)
+Варианты локализации также смотрите в [документации к библиотеки moment](https://momentjs.com/docs/#/i18n/)
 
 ```js
 import {JsonField, TypeDateTime} from '@dlabs71/d-dto';
@@ -344,6 +357,9 @@ import {JsonField, TypeDateTime} from '@dlabs71/d-dto';
 class Dto {
     @JsonField("value") @TypeDateTime() value;
     @JsonField("value1") @TypeDateTime("YYYY-MM-DDTHH:mm:ss") value1;
+
+    // сможет распознать следующий вид даты: 1 января 2022 20:01
+    @JsonField("value2") @TypeDate("DD MMMM YYYY HH:mm", "ru") value2;
 }
 ```
 
@@ -480,14 +496,12 @@ class Dto {
 
 Для выполнения дополнительных действий при конвертации из JSON в DTO-модель и наоборот существует 4 функции:
 
-| **Функция**                   | **
-Описание**                                                                                                          |
-| :------------------------------------- | :
-------------------------------------------------------------------------------------------------------------------------------
-| | beforeJ2cMapping(jsonObj, dto)       | Функция будет выполнена до процесса конвертации из JSON в DTO-модель | |
-afterJ2cMapping(jsonObj, dto)        | Функция будет выполнена после процесса конвертации из JSON в DTO-модель | |
-beforeC2jMapping(dto, resultJsonObj) | Функция будет выполнена до процесса конвертации из DTO-модели в JSON | |
-afterC2jMapping(dto, resultJsonObj)  | Функция будет выполнена после процесса конвертации из DTO-модели в JSON |
+| **Функция**                          | **Описание**                                                               | 
+| :----------------------------------- | :------------------------------------------------------------------------- |
+| beforeJ2cMapping(jsonObj, dto)       | Функция будет выполнена до процесса конвертации из JSON в DTO-модель       |
+| afterJ2cMapping(jsonObj, dto)        | Функция будет выполнена после процесса конвертации из JSON в DTO-модель    |
+| beforeC2jMapping(dto, resultJsonObj) | Функция будет выполнена до процесса конвертации из DTO-модели в JSON       |
+| afterC2jMapping(dto, resultJsonObj)  | Функция будет выполнена после процесса конвертации из DTO-модели в JSON    |
 
 Пример использования хуков конвертации из DTO-модели в JSON:
 
@@ -726,8 +740,7 @@ deleteArticleById(1).then(article => {
 - strict - если true то включается строгий режим конвертации (по умолчанию false). Т.е. все поля класса должны быть
   помечены декоратором @JsonField
 
-По обработке ответа данные декораторы работают
-аналогично [@GetMapper и @DeleteMapper](#section21).
+По обработке ответа данные декораторы работают аналогично [@GetMapper и @DeleteMapper](#section21).
 
 Данные декораторы также могут конвертировать из экземпляра класса DTO-модели в JSON объект перед выполнением функции.
 Для этого существуют параметры `modelRequest` и `dtoArgNumber`.

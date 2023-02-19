@@ -38,8 +38,10 @@ describe("C2J: dto class to json", () => {
         @JsonField("prop_yes_no") @TypeYesNo propYesNo = false;
         @JsonField("prop_date") @TypeDate("YYYY/MM/DD") propDate = moment("2022-01-01", "YYYY-MM-DD");
         @JsonField("prop_date_2") @TypeDate("DD.MM.YYYY") propDate2 = moment("01.01.2022", "DD.MM.YYYY");
+        @JsonField("prop_date_3") @TypeDate("DD MMMM YYYY", "ru") propDate3 = moment("01.01.2022", "DD.MM.YYYY");
         @JsonField("prop_datetime") @TypeDateTime("YYYY/MM/DDTHH:mm:ss") propDatetime = moment("2022-01-01T22:02:12", "YYYY-MM-DDTHH:mm:ss");
         @JsonField("prop_datetime_2") @TypeDateTime("DD.MM.YYYY HH:mm:ss") propDatetime2 = moment("01.01.2022 22:01:23", "DD.MM.YYYY HH:mm:ss");
+        @JsonField("prop_datetime_3") @TypeDateTime("DD MMMM YYYY HH:mm:ss", "ru") propDatetime3 = moment("01.01.2022 22:01:23", "DD.MM.YYYY HH:mm:ss");
         @JsonField("prop_json") @TypeJsonObj propJson = {
             data: "qwert",
             result: "result",
@@ -64,8 +66,10 @@ describe("C2J: dto class to json", () => {
         expect(json["prop_yes_no"]).toEqual("N");
         expect(json["prop_date"]).toEqual("2022/01/01");
         expect(json["prop_date_2"]).toEqual("01.01.2022");
+        expect(json["prop_date_3"]).toEqual("01 января 2022");
         expect(json["prop_datetime"]).toEqual("2022/01/01T22:02:12");
         expect(json["prop_datetime_2"]).toEqual("01.01.2022 22:01:23");
+        expect(json["prop_datetime_3"]).toEqual("01 января 2022 22:01:23");
         expect(json["prop_json"]).toEqual({
             data: "qwert",
             result: "result",
