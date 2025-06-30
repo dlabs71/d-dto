@@ -1,4 +1,4 @@
-import { convertArgs, convertResponse } from './common.js';
+import {convertArgs, convertResponse} from './common.js';
 
 /**
  * Decorator function for a service function that implements a GET request REST API
@@ -10,7 +10,9 @@ import { convertArgs, convertResponse } from './common.js';
 export function GetMapper(modelResponse, pathToData = 'data', strict = false) {
     return (target, property, descriptor) => {
         const originalMethod = descriptor.value;
-        descriptor.value = (...args) => convertResponse(modelResponse, originalMethod, pathToData, args, strict);
+        descriptor.value = function (...args) {
+            return convertResponse(modelResponse, originalMethod, pathToData, args, strict);
+        };
         return descriptor;
     };
 }
@@ -36,7 +38,7 @@ export function PostMapper(
     }
     return (target, property, descriptor) => {
         const originalMethod = descriptor.value;
-        descriptor.value = (...args) => {
+        descriptor.value = function (...args) {
             const newArgs = convertArgs(args, dtoArgNumber, strict);
             return convertResponse(modelResponse, originalMethod, pathToData, newArgs, strict);
         };

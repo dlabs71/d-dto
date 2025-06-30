@@ -1,6 +1,6 @@
-import { v5 as uuidV5 } from 'uuid';
-import { c2jMapperWrapper, j2cMapperWrapper } from '../mappers/index.js';
-import { UUID_NAMESPACE } from '../constants.js';
+import {v5 as uuidV5} from 'uuid';
+import {c2jMapperWrapper, j2cMapperWrapper} from '../mappers/index.js';
+import {UUID_NAMESPACE} from '../constants.js';
 
 /**
  * Function to get value from JS object by path
@@ -98,9 +98,9 @@ export function convertArgs(args, dtoArgNumber, strict = false) {
  */
 export function checkSeparateCondition(separateStorageConf, args) {
     if (separateStorageConf != null && typeof separateStorageConf === 'object') {
-        const { argIdx } = separateStorageConf;
+        const {argIdx} = separateStorageConf;
         if (argIdx !== null || argIdx !== undefined) {
-            const { conditions } = separateStorageConf;
+            const {conditions} = separateStorageConf;
 
             if (!conditions) {
                 return args[argIdx];
