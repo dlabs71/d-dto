@@ -8,10 +8,10 @@ import {convertArgs, convertResponse} from './common.js';
  * @returns {function} - decorator function
  */
 export function GetMapper(modelResponse, pathToData = 'data', strict = false) {
-    return (target, property, descriptor) => {
+    return function (target, property, descriptor) {
         const originalMethod = descriptor.value;
         descriptor.value = function (...args) {
-            return convertResponse(modelResponse, originalMethod, pathToData, args, strict);
+            return convertResponse(modelResponse, originalMethod, pathToData, args, strict, this);
         };
         return descriptor;
     };
@@ -36,11 +36,11 @@ export function PostMapper(
     if (!modelResponse) {
         modelResponse = modelRequest;
     }
-    return (target, property, descriptor) => {
+    return function (target, property, descriptor) {
         const originalMethod = descriptor.value;
         descriptor.value = function (...args) {
             const newArgs = convertArgs(args, dtoArgNumber, strict);
-            return convertResponse(modelResponse, originalMethod, pathToData, newArgs, strict);
+            return convertResponse(modelResponse, originalMethod, pathToData, newArgs, strict, this);
         };
         return descriptor;
     };
