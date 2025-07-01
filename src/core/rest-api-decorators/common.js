@@ -50,13 +50,12 @@ export function getDataFromObject(obj, pathToField = null) {
  * @returns {Promise<DtoModel>|DtoModel} - promise or simple dto class instance.
  * If original function return Promise instance that result will be a Promise with converted value
  */
-export function convertResponse(modelResponse, originalMethod, pathToData, args, strict = false) {
+export function convertResponse(modelResponse, originalMethod, pathToData, args, strict = false, context = undefined) {
     const convert = (result) => {
         const data = getDataFromObject(result, pathToData);
         return j2cMapperWrapper(data, modelResponse, !strict);
     };
-
-    const result = originalMethod.call(this, ...args);
+    const result = originalMethod.apply(context, args);
     if (result instanceof Promise) {
         return result.then((res) => convert(res));
     }
